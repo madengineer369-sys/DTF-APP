@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BLACKSTONE DTF STUDIO | Admin Upload & Inventory</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800;900&family=Permanent+Marker&family=Teko:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="dtf.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        bebas: ['"Bebas Neue"', 'sans-serif'],
+                        marker: ['"Permanent Marker"', 'cursive'],
+                        teko: ['Teko', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0faff',
+                            100: '#dcf4fa',
+                            200: '#bcebf7',
+                            300: '#99e1f2',
+                            400: '#84d4e7',
+                            500: '#78cde2',
+                            600: '#4bb8d4',
+                            700: '#2ea3bf',
+                            800: '#258097',
+                            900: '#1d5e70',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Instant Theme Initialization Script (Prevents Flickering) -->
+    <script>
+        (function() {
+            var theme = localStorage.getItem('blackstone_site_theme') || 'dark';
+            if (theme === 'light') {
+                document.documentElement.classList.add('light');
+                document.documentElement.classList.remove('dark');
+            } else {
+                document.documentElement.classList.add('dark');
+                document.documentElement.classList.remove('light');
+            }
+        })();
+    </script>
+</head>
+<body class="bg-black text-slate-100 font-sans antialiased min-h-screen flex flex-col selection:bg-[#78cde2] selection:text-black">
+
+    <!-- Top Social & Announcement Bar -->
+    <div class="bg-black border-b border-slate-900 text-xs py-2 px-4">
+        <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
+            <div class="flex items-center gap-3 text-slate-300 font-medium">
+                <span class="inline-flex items-center gap-1.5 text-[#78cde2] font-black">
+                    <span class="w-2 h-2 rounded-full bg-[#78cde2] animate-pulse"></span> BLACKSTONE 2K26
+                </span>
+                <span class="hidden md:inline text-slate-700">|</span>
+                <span class="hidden md:inline text-slate-400">100% Washproof Commercial Grade DTF Transfers & Custom Apparel (₹ INR)</span>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-2 sm:gap-3 ml-auto">
+                <span class="text-[11px] text-slate-400 hidden sm:inline">Follow Us:</span>
+
+                <a href="https://www.instagram.com/blackstone2k26?dlrf=MTh5OWppcThoNW05Yw==" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-900 hover:bg-slate-800 border border-[#78cde2]/30 text-white font-semibold transition group" title="Official Instagram @blackstone2k26">
+                    <span class="w-4 h-4 rounded-full insta-gradient flex items-center justify-center shrink-0">
+                        <svg class="w-2.5 h-2.5 fill-white" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                    </span>
+                    <span class="text-[11px] group-hover:text-[#78cde2] transition">@blackstone2k26</span>
+                </a>
+
+                <a href="https://www.instagram.com/rajshekhar_chaurasiya?mdxt=MXN4aHNjeXg5MmNieQ==" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-900 hover:bg-slate-800 border border-[#78cde2]/30 text-white font-semibold transition group" title="Founder Instagram @rajshekhar_chaurasiya">
+                    <span class="w-4 h-4 rounded-full insta-gradient flex items-center justify-center shrink-0">
+                        <svg class="w-2.5 h-2.5 fill-white" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                    </span>
+                    <span class="text-[11px] group-hover:text-[#78cde2] transition">@rajshekhar_chaurasiya</span>
+                </a>
+
+                <a id="top-youtube-link" href="https://youtube.com/@blackkstonefashion?si=q6t18zkHSFFN0Xnh" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-red-600/25 hover:bg-red-600/40 border border-red-500/50 text-red-100 font-bold transition group shadow-sm" title="Official YouTube @blackkstonefashion">
+                    <svg class="w-3.5 h-3.5 fill-red-500 group-hover:scale-110 transition shrink-0" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                    <span class="text-[11px] text-white group-hover:text-red-300">@blackkstonefashion</span>
+                </a>
+
+                <a id="top-youtube-studio-link" href="http://www.youtube.com/@BSfashionstudio-h7z" target="_blank" rel="noopener noreferrer" class="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-red-600/15 hover:bg-red-600/30 border border-red-500/30 text-red-200 font-semibold transition group" title="Studio YouTube @BSfashionstudio-h7z">
+                    <svg class="w-3.5 h-3.5 fill-red-500 group-hover:scale-110 transition shrink-0" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                    <span class="text-[11px] text-white group-hover:text-red-300">@BSfashionstudio-h7z</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sticky Header Navigation -->
+    <header class="sticky top-0 z-40 bg-black/95 backdrop-blur-md border-b border-[#78cde2]/20 shadow-xl shadow-black/80">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-2 sm:gap-4">
+            
+            <!-- Brand Logo -->
+            <a href="list.html" class="flex items-center gap-3 cursor-pointer group shrink-0">
+                <div class="w-11 h-11 rounded-xl bg-gradient-to-tr from-[#78cde2] to-[#3ca2bd] flex items-center justify-center text-black font-black text-xl shadow-lg shadow-[#78cde2]/25 group-hover:scale-105 transition">
+                    <i class="fa-solid fa-layer-group"></i>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <span class="font-black text-base sm:text-xl tracking-tight text-white">BLACKSTONE <span class="text-[#78cde2]">DTF</span></span>
+                        <span class="hidden xl:inline-block text-[10px] font-bold uppercase tracking-wider bg-black text-[#78cde2] border border-[#78cde2]/40 px-2 py-0.5 rounded-full">2K26</span>
+                    </div>
+                    <p class="text-[11px] text-slate-400 hidden sm:block">By Rajshekhar Chaurasiya</p>
+                </div>
+            </a>
+
+            <!-- Navigation Links -->
+            <div class="flex items-center gap-2 sm:gap-3">
+                <a href="list.html" id="nav-catalog-btn" class="px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition flex items-center gap-2 bg-slate-900 text-slate-300 hover:text-white border border-slate-800">
+                    <i class="fa-solid fa-store"></i>
+                    <span class="hidden md:inline">DTF Stickers</span>
+                </a>
+
+                <a href="customdtf.html" id="nav-custom-btn" class="relative px-3.5 sm:px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition flex items-center gap-2 bg-slate-900 text-slate-300 hover:text-white border border-slate-800">
+                    <i class="fa-solid fa-shirt text-[#78cde2]"></i>
+                    <span>Customise Cloth</span>
+                    <span class="hidden lg:inline-block bg-[#78cde2]/15 text-[#78cde2] text-[10px] px-1.5 py-0.5 rounded uppercase tracking-wider font-bold">Name • Logo • No.</span>
+                </a>
+
+                <!-- Admin Upload (Active Tab) -->
+                <a href="admin.html" id="nav-admin-btn" class="px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-black transition flex items-center gap-1.5 bg-[#78cde2] text-black shadow-lg shadow-[#78cde2]/25">
+                    <i id="admin-lock-icon" class="fa-solid fa-lock-open text-black text-xs"></i>
+                    <span>Admin Upload</span>
+                </a>
+
+                <!-- Admin Dashboard Link -->
+                <a href="ADMINDASHBOARD.html" class="px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition flex items-center gap-1.5 bg-slate-900 hover:bg-slate-800 text-[#78cde2] border border-[#78cde2]/30" title="Back to Admin Dashboard">
+                    <i class="fa-solid fa-chart-pie text-xs"></i>
+                    <span class="hidden sm:inline">Admin Dashboard</span>
+                </a>
+            </div>
+
+            <!-- Right Actions: WhatsApp Settings & Cart Trigger -->
+            <div class="flex items-center gap-2 shrink-0">
+                <!-- Dark / Light Background Theme Toggle -->
+                <div class="flex items-center bg-slate-900 border border-slate-800 p-0.5 sm:p-1 rounded-xl shrink-0" id="header-theme-toggle">
+                    <button type="button" onclick="setSiteTheme('dark')" id="theme-dark-btn" class="px-2 sm:px-2.5 py-1 rounded-lg text-xs font-bold transition flex items-center gap-1.5 bg-[#78cde2] text-black shadow-sm" title="Switch to Dark Background">
+                        <i class="fa-solid fa-moon text-xs"></i>
+                        <span class="hidden sm:inline">Dark</span>
+                    </button>
+                    <button type="button" onclick="setSiteTheme('light')" id="theme-light-btn" class="px-2 sm:px-2.5 py-1 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition flex items-center gap-1.5" title="Switch to Light Background">
+                        <i class="fa-solid fa-sun text-xs text-amber-400"></i>
+                        <span class="hidden sm:inline">Light</span>
+                    </button>
+                </div>
+
+                <button onclick="toggleWaSettingsModal()" title="Configure WhatsApp & Social Settings" class="p-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-[#78cde2] border border-slate-800 transition flex items-center gap-1.5 text-xs font-semibold">
+                    <i class="fa-brands fa-whatsapp text-base"></i>
+                    <span class="hidden xl:inline" id="header-wa-display">+91 9876543210</span>
+                    <i class="fa-solid fa-gear text-slate-400 text-[11px]"></i>
+                </button>
+
+                <button onclick="toggleCartDrawer(true)" class="relative px-3.5 sm:px-4 py-2.5 rounded-xl bg-[#78cde2] hover:bg-[#99e1f2] text-black font-black text-xs sm:text-sm transition flex items-center gap-2.5 shadow-lg shadow-[#78cde2]/20">
+                    <div class="relative">
+                        <i class="fa-solid fa-bag-shopping text-base text-black"></i>
+                        <span id="cart-badge-count" class="absolute -top-2 -right-2.5 bg-black text-[#78cde2] border border-[#78cde2] text-[10px] font-extrabold w-4 h-4 rounded-full flex items-center justify-center shadow">0</span>
+                    </div>
+                    <div class="text-left leading-tight hidden sm:block">
+                        <div class="text-[10px] font-bold text-black/70 uppercase">Order Cart</div>
+                        <div id="header-cart-total" class="font-black text-black">₹0</div>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT: ADMIN UPLOAD & INVENTORY -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        <section id="view-admin" class="space-y-8">
+            
+            <!-- Admin Top Bar -->
+            <div class="bg-black border border-[#78cde2]/30 rounded-2xl p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-xl">
+                <div class="flex items-center gap-3.5">
+                    <div class="w-12 h-12 rounded-2xl bg-[#78cde2]/15 border border-[#78cde2]/40 text-[#78cde2] flex items-center justify-center text-xl shrink-0">
+                        <i class="fa-solid fa-user-shield"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-0.5 rounded bg-[#78cde2] text-black font-black text-[10px] uppercase tracking-wider">Admin Mode Unlocked</span>
+                            <span class="text-xs text-slate-400">Owner: Rajshekhar Chaurasiya</span>
+                        </div>
+                        <h2 class="text-xl sm:text-2xl font-black text-white mt-0.5">Manual DTF Sticker Listing Studio (Image + Video)</h2>
+                        <p class="text-xs text-slate-300">Upload your DTF sticker image & video below. Once published, it immediately appears on the User Website!</p>
+                    </div>
+                </div>
+
+                <div class="flex flex-wrap items-center gap-2.5 shrink-0">
+                    <a href="list.html" class="px-4 py-2.5 rounded-xl bg-[#78cde2] hover:bg-[#99e1f2] text-black text-xs font-black flex items-center gap-2 shadow-lg shadow-[#78cde2]/20 transition">
+                        <i class="fa-solid fa-eye"></i> View Live User Website
+                    </a>
+                    <button onclick="lockAdminSession()" class="px-3.5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 text-xs font-bold border border-slate-800 transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-lock text-[#78cde2]"></i> Lock Admin
+                    </button>
+                </div>
+            </div>
+
+            <!-- Main Upload Form & Live Preview Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                
+                <!-- LEFT: MANUAL DTF STICKER UPLOAD FORM -->
+                <form id="admin-upload-form" onsubmit="handleAdminPublishSticker(event)" class="lg:col-span-7 bg-black border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6">
+                    <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+                        <h3 class="text-base sm:text-lg font-extrabold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-cloud-arrow-up text-[#78cde2]"></i>
+                            1. Upload DTF Sticker Media & Details
+                        </h3>
+                        <span class="text-[11px] text-[#78cde2] font-semibold">* Shows immediately on Storefront</span>
+                    </div>
+
+                    <!-- Media Upload Row: DTF Sticker Image + Video -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        
+                        <!-- Upload Box A: DTF Sticker Image -->
+                        <div class="bg-slate-950 border-2 border-dashed border-slate-800 hover:border-[#78cde2] rounded-2xl p-4 flex flex-col justify-between space-y-3 transition">
+                            <div>
+                                <div class="flex items-center justify-between mb-1">
+                                    <span class="text-xs font-extrabold text-[#78cde2] uppercase"><i class="fa-solid fa-image mr-1"></i> Step A: Sticker Image *</span>
+                                    <span class="text-[10px] text-slate-400">PNG / JPG / WebP</span>
+                                </div>
+                                <p class="text-[11px] text-slate-400 leading-relaxed">Upload your DTF sticker artwork or printed transfer photo.</p>
+                            </div>
+
+                            <label for="admin-img-file" class="cursor-pointer py-4 px-3 rounded-xl bg-black hover:bg-slate-900 border border-slate-800 text-center transition flex flex-col items-center justify-center gap-1.5">
+                                <i class="fa-solid fa-file-image text-2xl text-[#78cde2]"></i>
+                                <span id="admin-img-filename" class="text-xs font-bold text-white break-all">Click to Choose Image File</span>
+                                <span class="text-[10px] text-slate-400">Auto-compressed for fast loading</span>
+                            </label>
+                            <input id="admin-img-file" onchange="handleAdminImageSelect(event)" type="file" accept="image/*" class="hidden">
+
+                            <div>
+                                <input id="admin-img-url" oninput="updateAdminLivePreview()" type="url" placeholder="Or paste direct Image URL (optional)" class="w-full px-3 py-1.5 rounded-lg bg-black border border-slate-800 text-[11px] text-white placeholder-slate-500 focus:outline-none focus:border-[#78cde2]">
+                            </div>
+                        </div>
+
+                        <!-- Upload Box B: DTF Sticker Video -->
+                        <div class="bg-slate-950 border-2 border-dashed border-slate-800 hover:border-[#78cde2] rounded-2xl p-4 flex flex-col justify-between space-y-3 transition">
+                            <div>
+                                <div class="flex items-center justify-between mb-1">
+                                    <span class="text-xs font-extrabold text-[#78cde2] uppercase"><i class="fa-solid fa-film mr-1"></i> Step B: Sticker Video</span>
+                                    <span class="text-[10px] text-slate-400">MP4 / WebM / MOV</span>
+                                </div>
+                                <p class="text-[11px] text-slate-400 leading-relaxed">Upload a short video showing the sticker quality, peel, or heat press.</p>
+                            </div>
+
+                            <label for="admin-vid-file" class="cursor-pointer py-4 px-3 rounded-xl bg-black hover:bg-slate-900 border border-slate-800 text-center transition flex flex-col items-center justify-center gap-1.5">
+                                <i class="fa-solid fa-video text-2xl text-[#78cde2]"></i>
+                                <span id="admin-vid-filename" class="text-xs font-bold text-white break-all">Click to Choose Video File</span>
+                                <span class="text-[10px] text-slate-400">Saved in Browser IndexedDB</span>
+                            </label>
+                            <input id="admin-vid-file" onchange="handleAdminVideoSelect(event)" type="file" accept="video/mp4,video/webm,video/quicktime,video/*" class="hidden">
+
+                            <div class="flex items-center gap-1.5">
+                                <input id="admin-vid-url" oninput="updateAdminLivePreview()" type="url" placeholder="Or paste MP4 Video URL" class="w-full px-3 py-1.5 rounded-lg bg-black border border-slate-800 text-[11px] text-white placeholder-slate-500 focus:outline-none focus:border-[#78cde2]">
+                                <button type="button" onclick="generateDemoCanvasVideoForAdmin()" title="Generate a sample Peel/Press Video to test immediately" class="px-2.5 py-1.5 rounded-lg bg-[#78cde2]/15 hover:bg-[#78cde2]/25 border border-[#78cde2]/40 text-[#78cde2] text-[10px] font-bold shrink-0">
+                                    Auto Demo Video
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Sticker Name & Category -->
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div class="sm:col-span-2">
+                            <label class="block text-xs font-bold text-slate-300 mb-1.5">DTF Sticker Title / Name *</label>
+                            <input id="admin-title" oninput="updateAdminLivePreview()" type="text" required placeholder="e.g., Blackstone Dragon Oversized Back Print" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-sm text-white font-semibold focus:outline-none focus:border-[#78cde2]">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-300 mb-1.5">Category *</label>
+                            <select id="admin-category" onchange="updateAdminLivePreview()" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-sm text-white font-semibold focus:outline-none focus:border-[#78cde2]">
+                                <option value="Streetwear">Streetwear</option>
+                                <option value="Anime">Anime & Pop</option>
+                                <option value="Pocket Logos">Pocket Logos (Chest)</option>
+                                <option value="Typography">Desi & Spiritual</option>
+                                <option value="Sports">Sports & Gym</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Dimension & Paint Finish Inputs -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-300 mb-1.5">Sticker Dimension (in inches) *</label>
+                            <input id="admin-dimension" oninput="updateAdminLivePreview()" list="dimension-presets" type="text" required value="8 x 10 inch (Full Front)" placeholder="e.g., 8 x 10 inch (A4 Front)" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-sm text-white font-semibold focus:outline-none focus:border-[#78cde2]">
+                            <datalist id="dimension-presets">
+                                <option value="3.5 x 3.5 inch (Chest Logo)">
+                                <option value="8 x 10 inch (Full Front)">
+                                <option value="10 x 12 inch (Oversized Back)">
+                                <option value="11 x 14 inch (A3 Jumbo)">
+                                <option value="22 x 39 inch (1 Meter Gang Sheet)">
+                            </datalist>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-slate-300 mb-1.5">Paint / Ink Quality *</label>
+                            <input id="admin-paint" oninput="updateAdminLivePreview()" list="paint-presets" type="text" required value="Matte CMYK+White Ink" placeholder="e.g., 3D Puff Embossed DTF" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-sm text-white font-semibold focus:outline-none focus:border-[#78cde2]">
+                            <datalist id="paint-presets">
+                                <option value="Matte CMYK+White Ink">
+                                <option value="3D Puff Embossed DTF">
+                                <option value="Neon Fluorescent Paint">
+                                <option value="Gold Metallic Foil DTF">
+                                <option value="HD Glossy Silicone Ink">
+                                <option value="Glitter Sparkle DTF Ink">
+                            </datalist>
+                        </div>
+                    </div>
+
+                    <!-- Price in Indian Currency (₹) & Highlight Badge -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-300 mb-1.5">Price in Indian Currency (₹ INR) *</label>
+                            <div class="relative">
+                                <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#78cde2] font-black text-base">₹</span>
+                                <input id="admin-price" oninput="updateAdminLivePreview()" type="number" min="1" required value="99" placeholder="99" class="w-full pl-8 pr-4 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-base text-white font-black focus:outline-none focus:border-[#78cde2]">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-slate-300 mb-1.5">Top Tag / Badge</label>
+                            <input id="admin-badge" oninput="updateAdminLivePreview()" type="text" value="New Arrival" placeholder="e.g., New Arrival, Bestseller, 3D Puff" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-sm text-white font-semibold focus:outline-none focus:border-[#78cde2]">
+                        </div>
+                    </div>
+
+                    <!-- Publish Button -->
+                    <div class="pt-2 flex flex-wrap items-center justify-end gap-3">
+                        <button type="button" onclick="resetAdminUploadForm()" class="px-4 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 text-xs font-bold border border-slate-800">
+                            Reset Form
+                        </button>
+                        <button type="submit" class="px-6 py-3.5 rounded-xl bg-[#78cde2] hover:bg-[#99e1f2] text-black font-black text-sm shadow-xl shadow-[#78cde2]/25 transition flex items-center gap-2">
+                            <i class="fa-solid fa-bolt"></i>
+                            <span>Publish Sticker to User Website</span>
+                        </button>
+                    </div>
+                </form>
+
+                <!-- RIGHT: LIVE STOREFRONT CARD PREVIEW FOR ADMIN -->
+                <div class="lg:col-span-5 bg-black border border-slate-800 rounded-3xl p-6 shadow-2xl space-y-4">
+                    <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                        <span class="text-xs font-bold uppercase tracking-wider text-[#78cde2] flex items-center gap-1.5">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i> Live Customer Card Preview
+                        </span>
+                        <div class="flex bg-slate-950 p-1 rounded-lg border border-slate-800 text-[11px]">
+                            <button type="button" id="adm-prev-tab-img" onclick="switchAdminPreviewMedia('image')" class="px-2.5 py-1 rounded bg-[#78cde2] text-black font-bold">Image</button>
+                            <button type="button" id="adm-prev-tab-vid" onclick="switchAdminPreviewMedia('video')" class="px-2.5 py-1 rounded text-slate-400 hover:text-white font-semibold">Video</button>
+                        </div>
+                    </div>
+
+                    <div class="max-w-xs mx-auto bg-slate-950 border border-slate-800 rounded-2xl overflow-hidden shadow-xl">
+                        <div class="relative h-56 checkerboard-dark flex items-center justify-center p-4">
+                            <span id="adm-prev-badge" class="absolute top-3 left-3 z-10 px-2.5 py-0.5 rounded-full bg-black/90 border border-slate-700 text-[10px] font-bold text-[#78cde2]">New Arrival</span>
+                            <span id="adm-prev-cat" class="absolute top-3 right-3 z-10 px-2 py-0.5 rounded-md bg-black/90 text-[10px] font-semibold text-slate-300">Streetwear</span>
+
+                            <img id="adm-prev-img-el" src="" alt="Admin Preview" class="max-h-44 w-auto object-contain rounded drop-shadow-xl hidden" />
+                            <div id="adm-prev-placeholder" class="text-center text-slate-500 space-y-1">
+                                <i class="fa-solid fa-image text-3xl text-slate-600"></i>
+                                <p class="text-[11px]">Upload an image to preview</p>
+                            </div>
+
+                            <video id="adm-prev-vid-el" controls muted loop playsinline class="w-full h-full object-cover rounded-lg hidden"></video>
+                        </div>
+
+                        <div class="p-4 space-y-3">
+                            <h4 id="adm-prev-title" class="font-bold text-base text-white leading-snug">Your Sticker Title</h4>
+                            <div class="space-y-1.5 text-xs">
+                                <div class="flex items-center gap-2 text-slate-300 bg-black px-2.5 py-1.5 rounded-lg border border-slate-800">
+                                    <i class="fa-solid fa-ruler-combined text-[#78cde2] w-4"></i>
+                                    <span class="text-slate-400">Dimension:</span>
+                                    <strong id="adm-prev-dim" class="text-white ml-auto">8 x 10 inch (Full Front)</strong>
+                                </div>
+                                <div class="flex items-center gap-2 text-slate-300 bg-black px-2.5 py-1.5 rounded-lg border border-slate-800">
+                                    <i class="fa-solid fa-fill-drip text-[#78cde2] w-4"></i>
+                                    <span class="text-slate-400">Paint:</span>
+                                    <strong id="adm-prev-paint" class="text-[#78cde2] ml-auto">Matte CMYK+White Ink</strong>
+                                </div>
+                            </div>
+                            <div class="pt-3 border-t border-slate-800 flex items-center justify-between">
+                                <div>
+                                    <span class="text-[10px] uppercase font-bold text-slate-400 block">Price / Sticker</span>
+                                    <span id="adm-prev-price" class="text-xl font-black text-[#78cde2]">₹99</span>
+                                </div>
+                                <span class="px-3.5 py-2 rounded-xl bg-[#78cde2] text-black font-black text-xs opacity-90">
+                                    <i class="fa-solid fa-cart-plus mr-1"></i> Add
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Admin Inventory Management Table -->
+            <div class="bg-black border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-4">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800 pb-4">
+                    <div>
+                        <h3 class="text-base sm:text-lg font-extrabold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-boxes-stacked text-[#78cde2]"></i>
+                            2. Manage Listed DTF Stickers (<span id="admin-total-count">0</span> Products Live)
+                        </h3>
+                        <p class="text-xs text-slate-400">Edit prices or remove stickers anytime. Changes reflect immediately on the customer catalog.</p>
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse text-xs sm:text-sm">
+                        <thead>
+                            <tr class="border-b border-slate-800 text-slate-400 uppercase text-[11px]">
+                                <th class="py-3 px-3">Media (Img/Video)</th>
+                                <th class="py-3 px-3">Sticker Name & Category</th>
+                                <th class="py-3 px-3">Dimension & Paint</th>
+                                <th class="py-3 px-3">Price (₹ INR)</th>
+                                <th class="py-3 px-3 text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-inventory-tbody" class="divide-y divide-slate-800/70">
+                            <!-- Populated dynamically by admin.js -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- MODAL: ADMIN PIN AUTHENTICATION -->
+    <div id="admin-pin-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+        <div class="bg-black border border-[#78cde2]/40 rounded-3xl max-w-sm w-full p-6 space-y-4 shadow-2xl">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-10 h-10 rounded-xl bg-[#78cde2]/15 border border-[#78cde2]/30 text-[#78cde2] flex items-center justify-center text-lg">
+                        <i class="fa-solid fa-user-lock"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-extrabold text-base text-white">Admin Access Only</h3>
+                        <p class="text-[11px] text-slate-400">Enter Admin PIN to list DTF stickers</p>
+                    </div>
+                </div>
+                <button onclick="closeAdminPinModal()" class="text-slate-400 hover:text-white">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="bg-[#78cde2]/10 border border-[#78cde2]/30 rounded-xl p-3 text-xs text-slate-300">
+                <i class="fa-solid fa-key mr-1 text-[#78cde2]"></i>
+                <strong>Owner Hint:</strong> Default PIN is <code class="bg-black/60 px-1.5 py-0.5 rounded font-mono text-[#78cde2] font-bold">1234</code>.
+            </div>
+
+            <form onsubmit="verifyAdminPinSubmit(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-300 mb-1.5">Enter 4-Digit Admin PIN</label>
+                    <input id="admin-pin-input" type="password" inputmode="numeric" maxlength="8" required placeholder="••••" class="w-full px-4 py-3 rounded-xl bg-slate-950 border border-slate-700 text-center text-xl tracking-[0.5em] font-black text-white focus:outline-none focus:border-[#78cde2]">
+                </div>
+                <div class="flex justify-end gap-2">
+                    <a href="list.html" class="px-4 py-2.5 rounded-xl bg-slate-900 text-slate-300 text-xs font-bold inline-flex items-center border border-slate-800">Cancel</a>
+                    <button type="submit" class="px-5 py-2.5 rounded-xl bg-[#78cde2] hover:bg-[#99e1f2] text-black text-xs font-black shadow-md shadow-[#78cde2]/20">Unlock Admin Studio</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- SLIDE-OVER SHOPPING CART -->
+    <div id="cart-backdrop" onclick="toggleCartDrawer(false)" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden transition-opacity"></div>
+
+    <aside id="cart-drawer" class="fixed top-0 right-0 h-full w-full max-w-md bg-black border-l border-slate-800 z-50 transform translate-x-full transition-transform duration-300 flex flex-col shadow-2xl">
+        <div class="p-5 bg-slate-950 border-b border-slate-800 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-xl bg-[#78cde2]/15 border border-[#78cde2]/30 text-[#78cde2] flex items-center justify-center font-bold">
+                    <i class="fa-solid fa-bag-shopping"></i>
+                </div>
+                <div>
+                    <h3 class="font-extrabold text-base text-white">Your DTF Order Cart</h3>
+                    <p class="text-xs text-slate-400">Sends full order list to WhatsApp Business</p>
+                </div>
+            </div>
+            <button onclick="toggleCartDrawer(false)" class="w-8 h-8 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-white flex items-center justify-center border border-slate-800">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <div class="flex-grow overflow-y-auto p-5 space-y-6">
+            <div id="cart-items-container" class="space-y-3">
+                <!-- Populated dynamically -->
+            </div>
+
+            <!-- Customer & Delivery Form -->
+            <div id="cart-customer-form" class="bg-slate-950 border border-slate-800 rounded-2xl p-4 space-y-3.5">
+                <div class="flex items-center justify-between border-b border-slate-800 pb-2.5">
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-[#78cde2] flex items-center gap-1.5">
+                        <i class="fa-solid fa-address-card"></i> Customer & Delivery Details
+                    </h4>
+                    <span class="text-[10px] text-slate-400">Included in WhatsApp Bill</span>
+                </div>
+
+                <div class="space-y-3">
+                    <div>
+                        <label class="block text-[11px] font-semibold text-slate-300 mb-1">Your Name *</label>
+                        <input id="cust-name" type="text" placeholder="e.g., Rahul Verma" class="w-full px-3 py-2 rounded-xl bg-black border border-slate-800 text-xs text-white focus:outline-none focus:border-[#78cde2]">
+                    </div>
+                    <div class="grid grid-cols-2 gap-2.5">
+                        <div>
+                            <label class="block text-[11px] font-semibold text-slate-300 mb-1">Mobile Number *</label>
+                            <input id="cust-phone" type="tel" placeholder="10-digit mobile" class="w-full px-3 py-2 rounded-xl bg-black border border-slate-800 text-xs text-white focus:outline-none focus:border-[#78cde2]">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-semibold text-slate-300 mb-1">Pincode *</label>
+                            <input id="cust-pincode" type="text" placeholder="e.g., 110001" class="w-full px-3 py-2 rounded-xl bg-black border border-slate-800 text-xs text-white focus:outline-none focus:border-[#78cde2]">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-semibold text-slate-300 mb-1">Full Delivery Address / City *</label>
+                        <input id="cust-address" type="text" placeholder="Shop/House No, Area, City, State" class="w-full px-3 py-2 rounded-xl bg-black border border-slate-800 text-xs text-white focus:outline-none focus:border-[#78cde2]">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="p-5 bg-slate-950 border-t border-slate-800 space-y-3">
+            <div class="space-y-1 text-xs">
+                <div class="flex justify-between text-slate-400">
+                    <span>Items Subtotal (<span id="cart-summary-qty">0</span> pcs)</span>
+                    <span id="cart-subtotal" class="font-semibold text-slate-200">₹0</span>
+                </div>
+                <div class="flex justify-between text-slate-400">
+                    <span>GST & Packaging</span>
+                    <span class="text-[#78cde2] font-semibold">Included</span>
+                </div>
+                <div class="flex justify-between items-baseline text-base font-black text-white pt-2 border-t border-slate-800">
+                    <span>Total Amount Payable</span>
+                    <span id="cart-grand-total" class="text-xl text-[#78cde2] font-black">₹0</span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 gap-2 pt-1">
+                <button onclick="placeOrderOnWhatsApp(false)" class="w-full py-3.5 px-4 rounded-xl bg-[#78cde2] hover:bg-[#99e1f2] text-black font-black text-sm shadow-xl shadow-[#78cde2]/25 transition flex items-center justify-center gap-2">
+                    <i class="fa-brands fa-whatsapp text-lg"></i>
+                    <span>Place Order on WhatsApp Business</span>
+                </button>
+                <button onclick="placeOrderOnWhatsApp(true)" class="w-full py-2 px-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 font-semibold text-xs border border-slate-800 transition flex items-center justify-center gap-1.5">
+                    <i class="fa-regular fa-eye"></i>
+                    <span>Preview Formatted WhatsApp Message</span>
+                </button>
+            </div>
+        </div>
+    </aside>
+
+    <!-- MODAL: STORE SETTINGS -->
+    <div id="wa-settings-modal" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+        <div class="bg-black border border-[#78cde2]/30 rounded-2xl max-w-md w-full p-6 space-y-4 shadow-2xl">
+            <div class="flex items-center justify-between">
+                <h3 class="font-extrabold text-base text-white flex items-center gap-2">
+                    <i class="fa-solid fa-sliders text-[#78cde2]"></i>
+                    Store & Admin Settings
+                </h3>
+                <button onclick="toggleWaSettingsModal()" class="text-slate-400 hover:text-white">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="space-y-3">
+                <div>
+                    <label class="block text-xs font-bold text-slate-300 mb-1">WhatsApp Business Number (10-digit India)</label>
+                    <div class="flex">
+                        <span class="inline-flex items-center px-3 rounded-l-xl bg-slate-900 border border-r-0 border-slate-800 text-slate-300 text-sm font-bold">+91</span>
+                        <input id="owner-wa-input" type="tel" maxlength="10" value="9876543210" placeholder="9876543210" class="w-full px-3.5 py-2 rounded-r-xl bg-slate-950 border border-slate-800 text-white text-sm font-bold focus:outline-none focus:border-[#78cde2]">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-300 mb-1">Primary YouTube Channel (@blackkstonefashion)</label>
+                    <input id="owner-yt-input" type="url" value="https://youtube.com/@blackkstonefashion?si=q6t18zkHSFFN0Xnh" class="w-full px-3.5 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white text-xs focus:outline-none focus:border-red-500">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-300 mb-1">Studio YouTube Channel (@BSfashionstudio-h7z)</label>
+                    <input id="owner-yt-studio-input" type="url" value="http://www.youtube.com/@BSfashionstudio-h7z" class="w-full px-3.5 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white text-xs focus:outline-none focus:border-red-500">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-300 mb-1">Admin Upload Secret PIN</label>
+                    <input id="owner-pin-input" type="text" maxlength="8" value="1234" placeholder="1234" class="w-full px-3.5 py-2 rounded-xl bg-slate-950 border border-slate-800 text-[#78cde2] text-sm font-mono font-bold focus:outline-none focus:border-[#78cde2]">
+                </div>
+            </div>
+
+            <div class="flex justify-end gap-2 pt-2">
+                <button onclick="toggleWaSettingsModal()" class="px-4 py-2 rounded-xl bg-slate-900 text-slate-300 text-xs font-bold border border-slate-800">Cancel</button>
+                <button onclick="saveOwnerSettings()" class="px-5 py-2 rounded-xl bg-[#78cde2] hover:bg-[#99e1f2] text-black text-xs font-black shadow-md shadow-[#78cde2]/20">Save Settings</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: WHATSAPP ORDER PREVIEW -->
+    <div id="wa-preview-modal" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+        <div class="bg-black border border-[#78cde2]/30 rounded-2xl max-w-lg w-full p-6 space-y-4 shadow-2xl">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                <div class="flex items-center gap-2">
+                    <i class="fa-brands fa-whatsapp text-[#78cde2] text-xl"></i>
+                    <h3 class="font-extrabold text-base text-white">WhatsApp Order Summary Preview</h3>
+                </div>
+                <button onclick="closeWaPreviewModal()" class="text-slate-400 hover:text-white">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="bg-[#78cde2]/10 border border-[#78cde2]/30 rounded-xl p-3 text-xs text-slate-200 flex items-start gap-2.5">
+                <i class="fa-solid fa-circle-info mt-0.5 text-[#78cde2]"></i>
+                <div>
+                    This exact formatted invoice will open in WhatsApp addressed to <strong id="modal-target-wa">+91 9876543210</strong>. If you uploaded a custom JPG/PNG logo, simply attach that image file inside the WhatsApp chat after sending this message!
+                </div>
+            </div>
+
+            <pre id="wa-message-preview-box" class="bg-slate-950 border border-slate-800 rounded-xl p-4 text-xs text-slate-200 font-mono whitespace-pre-wrap max-h-72 overflow-y-auto leading-relaxed"></pre>
+
+            <div class="flex flex-wrap items-center justify-between gap-2 pt-2">
+                <button onclick="copyOrderText()" class="px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-200 text-xs font-bold flex items-center gap-1.5 border border-slate-800">
+                    <i class="fa-regular fa-copy"></i> Copy Text
+                </button>
+                <div class="flex items-center gap-2">
+                    <button onclick="closeWaPreviewModal()" class="px-4 py-2.5 rounded-xl bg-slate-900 text-slate-400 text-xs font-bold border border-slate-800">Close</button>
+                    <a id="wa-direct-launch-link" href="#" target="_blank" rel="noopener noreferrer" class="px-5 py-2.5 rounded-xl bg-[#78cde2] hover:bg-[#99e1f2] text-black text-xs font-black flex items-center gap-2 shadow-lg shadow-[#78cde2]/20">
+                        <i class="fa-brands fa-whatsapp text-base"></i> Open WhatsApp & Send Now
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-5 left-1/2 -translate-x-1/2 z-50 bg-black border border-[#78cde2]/50 text-white px-4 py-3 rounded-xl shadow-2xl flex items-center gap-3 text-xs sm:text-sm font-semibold opacity-0 pointer-events-none transition-all duration-300">
+        <i class="fa-solid fa-circle-check text-[#78cde2] text-base"></i>
+        <span id="toast-msg">Added to cart!</span>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-black border-t border-slate-900 mt-16 py-10 px-4 text-xs text-slate-400">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+            <div class="space-y-2 text-center md:text-left">
+                <div class="flex items-center justify-center md:justify-start gap-2 font-black text-base text-white">
+                    <i class="fa-solid fa-layer-group text-[#78cde2]"></i> BLACKSTONE DTF STUDIO
+                </div>
+                <p class="text-slate-400 text-xs">Commercial Grade DTF Transfers & Custom Apparel Printing across India.</p>
+            </div>
+
+            <div class="flex flex-wrap items-center justify-center gap-3">
+                <a href="https://www.instagram.com/blackstone2k26?dlrf=MTh5OWppcThoNW05Yw==" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-950 hover:bg-slate-900 border border-slate-800 text-white font-bold transition shadow">
+                    <span class="w-5 h-5 rounded-md insta-gradient flex items-center justify-center">
+                        <svg class="w-3.5 h-3.5 fill-white" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                    </span>
+                    <span>@blackstone2k26</span>
+                </a>
+
+                <a href="https://www.instagram.com/rajshekhar_chaurasiya?mdxt=MXN4aHNjeXg5MmNieQ==" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-950 hover:bg-slate-900 border border-slate-800 text-white font-bold transition shadow">
+                    <span class="w-5 h-5 rounded-md insta-gradient flex items-center justify-center">
+                        <svg class="w-3.5 h-3.5 fill-white" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                    </span>
+                    <span>@rajshekhar_chaurasiya</span>
+                </a>
+
+                <a id="footer-youtube-link" href="https://youtube.com/@blackkstonefashion?si=q6t18zkHSFFN0Xnh" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-950 hover:bg-slate-900 border border-red-500/40 text-white font-bold transition shadow">
+                    <span class="w-5 h-5 rounded-md bg-red-600 flex items-center justify-center">
+                        <svg class="w-3.5 h-3.5 fill-white" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                    </span>
+                    <span>@blackkstonefashion</span>
+                </a>
+
+                <a id="footer-youtube-studio-link" href="http://www.youtube.com/@BSfashionstudio-h7z" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-950 hover:bg-slate-900 border border-slate-800 text-white font-bold transition shadow">
+                    <span class="w-5 h-5 rounded-md bg-red-600 flex items-center justify-center">
+                        <svg class="w-3.5 h-3.5 fill-white" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                    </span>
+                    <span>@BSfashionstudio-h7z</span>
+                </a>
+            </div>
+
+            <!-- Admin Access ONLY IN FOOTER -->
+            <div class="text-center md:text-right space-y-1.5">
+                <div class="text-slate-300 font-semibold text-xs">All Prices in Indian Rupees (₹ INR)</div>
+                <div class="text-slate-500 text-[11px]">Direct WhatsApp Business Instant Checkout</div>
+                <div class="pt-1">
+                    <a href="ADMINDASHBOARD.html" class="inline-flex items-center gap-1.5 text-[11px] text-slate-500 hover:text-[#78cde2] transition" title="Owner Admin Access">
+                        <i class="fa-solid fa-lock text-[10px]"></i>
+                        <span>Admin Dashboard</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Supabase CDN & Bridge -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="dtfSupabase.js"></script>
+
+    <!-- Shared Application & Page-Specific Scripts -->
+    <script src="dtf.js"></script>
+    <script src="admin.js"></script>
+</body>
+</html>

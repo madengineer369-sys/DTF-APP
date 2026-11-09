@@ -1,0 +1,1297 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin & Production Control OS | BLACKSTONE DTF STUDIO</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap"
+    rel="stylesheet">
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f0faff',
+              100: '#dcf4fa',
+              200: '#bcebf7',
+              300: '#99e1f2',
+              400: '#84d4e7',
+              500: '#78cde2',
+              600: '#4bb8d4',
+              700: '#2ea3bf',
+              800: '#258097',
+              900: '#1d5e70',
+            },
+            dark: {
+              950: '#000000',
+              900: '#050811',
+              850: '#0b101c',
+              800: '#111827',
+              700: '#1f2937'
+            }
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Supabase JS Client -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <!-- External Admin Dashboard Stylesheet -->
+  <link rel="stylesheet" href="admindashboard.css">
+
+  <!-- Instant Theme Initialization Script (Prevents Flickering) -->
+  <script>
+    (function() {
+      var theme = localStorage.getItem('blackstone_site_theme') || 'dark';
+      if (theme === 'light') {
+        document.documentElement.classList.add('light');
+        document.documentElement.classList.remove('dark');
+      } else {
+        document.documentElement.classList.add('dark');
+        document.documentElement.classList.remove('light');
+      }
+    })();
+  </script>
+</head>
+
+<body
+  class="bg-black text-slate-100 font-sans antialiased selection:bg-[#78cde2] selection:text-black min-h-screen flex flex-col">
+
+  <!-- ======================================================== -->
+  <!-- ADMIN PIN AUTHENTICATION GATEWAY                         -->
+  <!-- ======================================================== -->
+  <div id="adminAuthLockScreen" class="fixed inset-0 bg-black/95 backdrop-blur-md z-[100] flex items-center justify-center p-4">
+    <div class="bg-dark-900 border border-[#78cde2]/40 rounded-3xl w-full max-w-sm p-6 space-y-5 text-center shadow-2xl relative overflow-hidden">
+      <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-[#78cde2] to-[#3ca2bd] mx-auto flex items-center justify-center text-black shadow-lg shadow-[#78cde2]/25">
+        <i data-lucide="shield-check" class="w-7 h-7"></i>
+      </div>
+      <div>
+        <h3 class="font-black text-white text-base tracking-wide">BLACKSTONE ADMIN OS</h3>
+        <p class="text-xs text-slate-400 mt-1">Enter 4-digit Owner PIN to open Admin Panel</p>
+      </div>
+      <form onsubmit="verifyDashboardPin(event)" class="space-y-4">
+        <input id="dashboardPinInput" type="password" inputmode="numeric" maxlength="8" autofocus placeholder="••••" class="w-full px-4 py-3 rounded-2xl bg-black border border-slate-700 text-center text-2xl tracking-[0.4em] font-mono font-bold text-white focus:outline-none focus:border-[#78cde2] shadow-inner">
+        <button type="submit" class="w-full py-3 rounded-xl bg-[#78cde2] hover:bg-[#99e1f2] text-black font-black text-xs uppercase tracking-wider shadow-lg shadow-[#78cde2]/25 transition">
+          Unlock Admin Panel
+        </button>
+      </form>
+      <div class="pt-2">
+        <a href="list.html" class="text-xs text-slate-500 hover:text-[#78cde2] font-medium transition">← Back to Storefront</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- TOP STUDIO NAV & SYSTEM ANNOUNCEMENT                     -->
+  <!-- ======================================================== -->
+  <header class="bg-black border-b border-slate-900 sticky top-0 z-40 backdrop-blur-md">
+    <div class="max-w-[1550px] mx-auto px-4 py-2.5 flex items-center justify-between text-xs">
+      <!-- Left: Brand badge & Quick links -->
+      <div class="flex items-center gap-3">
+        <span
+          class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[#78cde2]/15 border border-[#78cde2]/30 text-[#78cde2] font-bold tracking-wider uppercase text-[10px]">
+          <span class="w-2 h-2 rounded-full bg-[#78cde2] animate-pulse"></span>
+          Blackstone 2K26 Production OS
+        </span>
+        <span class="text-slate-600 hidden md:inline">•</span>
+        <span class="text-slate-400 hidden lg:inline">Founder: <strong class="text-white">Rajshekhar
+            Chaurasiya</strong></span>
+      </div>
+
+      <!-- Center / Right: Cross-App Storefront Links & Theme Toggle -->
+      <div class="flex items-center gap-2">
+        <!-- Dark / Light Theme Toggle -->
+        <div class="bg-black p-0.5 rounded-lg border border-slate-800 flex items-center text-xs" id="adminTopThemeToggle">
+          <button type="button" onclick="setSiteTheme('dark')" id="adminThemeDarkBtn"
+            class="px-2 py-1 rounded-md font-black transition flex items-center gap-1 bg-[#78cde2] text-black text-[11px]" title="Dark Theme">
+            <i data-lucide="moon" class="w-3 h-3"></i>
+            <span class="hidden sm:inline">Dark</span>
+          </button>
+          <button type="button" onclick="setSiteTheme('light')" id="adminThemeLightBtn"
+            class="px-2 py-1 rounded-md font-semibold transition flex items-center gap-1 text-slate-400 hover:text-white text-[11px]" title="Light Theme">
+            <i data-lucide="sun" class="w-3 h-3 text-amber-400"></i>
+            <span class="hidden sm:inline">Light</span>
+          </button>
+        </div>
+
+        <a href="list.html"
+          class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-dark-850 hover:bg-dark-800 text-slate-300 hover:text-white border border-slate-800 transition">
+          <i data-lucide="shopping-bag" class="w-3.5 h-3.5 text-[#78cde2]"></i>
+          <span class="font-medium">Stickers Store</span>
+        </a>
+        <a href="customdtf.html"
+          class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-dark-850 hover:bg-dark-800 text-slate-300 hover:text-white border border-slate-800 transition">
+          <i data-lucide="shirt" class="w-3.5 h-3.5 text-[#78cde2]"></i>
+          <span class="font-medium">Custom Apparel</span>
+        </a>
+        <a href="admin.html"
+          class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#78cde2]/15 hover:bg-[#78cde2]/25 text-[#78cde2] border border-[#78cde2]/40 transition">
+          <i data-lucide="upload-cloud" class="w-3.5 h-3.5 text-[#78cde2]"></i>
+          <span class="font-bold">Admin Upload</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <div class="flex-1 flex overflow-hidden">
+    <!-- ======================================================== -->
+    <!-- SIDEBAR NAVIGATION                                       -->
+    <!-- ======================================================== -->
+    <aside id="sidebarNavContainer"
+      class="w-64 bg-black border-r border-slate-800 flex flex-col shrink-0 transition-all duration-300 z-30 lg:flex hidden">
+      <!-- Brand Header -->
+      <div class="p-4 border-b border-slate-800 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div
+            class="w-10 h-10 rounded-xl bg-gradient-to-tr from-[#78cde2] to-[#3ca2bd] flex items-center justify-center font-black text-black text-base shadow-lg shadow-[#78cde2]/20 shrink-0">
+            BS
+          </div>
+          <div class="min-w-0">
+            <h1 id="sidebarStoreName" class="font-extrabold text-white text-xs tracking-wide truncate">BLACKSTONE DTF
+              STUDIO</h1>
+            <p class="text-[10px] text-[#78cde2] font-mono font-bold">2K26 PRINT SUITE</p>
+          </div>
+        </div>
+        <button onclick="toggleMobileNav()" class="lg:hidden text-slate-400 hover:text-white p-1">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <!-- Navigation Tabs Menu -->
+      <nav class="flex-1 p-3 space-y-1 overflow-y-auto">
+        <button id="nav-overview" onclick="switchTab('overview')"
+          class="nav-btn w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-semibold bg-[#78cde2]/15 text-white border border-[#78cde2]/40 shadow-sm transition">
+          <div class="flex items-center gap-2.5">
+            <i data-lucide="layout-dashboard" class="w-4 h-4 text-[#78cde2]"></i>
+            <span>Overview & Pulse</span>
+          </div>
+        </button>
+
+        <button id="nav-orders" onclick="switchTab('orders')"
+          class="nav-btn w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800/50 transition">
+          <div class="flex items-center gap-2.5">
+            <i data-lucide="printer" class="w-4 h-4 text-[#78cde2]"></i>
+            <span>Orders & RIP Queue</span>
+          </div>
+          <span id="navBadgeOrders"
+            class="px-1.5 py-0.5 rounded-md bg-[#78cde2] text-black font-mono text-[10px] font-black">5</span>
+        </button>
+
+        <button id="nav-products" onclick="switchTab('products')"
+          class="nav-btn w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800/50 transition">
+          <div class="flex items-center gap-2.5">
+            <i data-lucide="layers" class="w-4 h-4 text-cyan-400"></i>
+            <span>Stickers & Apparel Catalog</span>
+          </div>
+        </button>
+
+        <a href="admin.html"
+          class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-bold text-[#78cde2] hover:text-[#99e1f2] hover:bg-[#78cde2]/10 border border-[#78cde2]/30 transition">
+          <div class="flex items-center gap-2.5">
+            <i data-lucide="upload-cloud" class="w-4 h-4 text-[#78cde2]"></i>
+            <span>Admin Upload Studio</span>
+          </div>
+          <span class="text-[10px] px-1.5 py-0.5 rounded bg-[#78cde2]/20 text-[#78cde2] font-mono font-bold">Upload</span>
+        </a>
+
+        <button id="nav-pricing" onclick="switchTab('pricing')"
+          class="nav-btn w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800/50 transition">
+          <div class="flex items-center gap-2.5">
+            <i data-lucide="calculator" class="w-4 h-4 text-cyan-400"></i>
+            <span>22" Gang Sheet Builder</span>
+          </div>
+        </button>
+
+        <button id="nav-website" onclick="switchTab('website')"
+          class="nav-btn w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800/50 transition">
+          <div class="flex items-center gap-2.5">
+            <i data-lucide="globe" class="w-4 h-4 text-indigo-400"></i>
+            <span>Storefront CMS & Links</span>
+          </div>
+        </button>
+
+        <button id="nav-inventory" onclick="switchTab('inventory')"
+          class="nav-btn w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800/50 transition">
+          <div class="flex items-center gap-2.5">
+            <i data-lucide="box" class="w-4 h-4 text-emerald-400"></i>
+            <span>DTF Consumables & Stock</span>
+          </div>
+        </button>
+
+        <button id="nav-supabase" onclick="switchTab('supabase')"
+          class="nav-btn w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800/50 transition">
+          <div class="flex items-center gap-2.5">
+            <i data-lucide="database" class="w-4 h-4 text-[#78cde2]"></i>
+            <span>Supabase Cloud Link</span>
+          </div>
+          <span class="w-2 h-2 rounded-full bg-slate-600"></span>
+        </button>
+      </nav>
+
+      <!-- Sidebar Footer -->
+      <div class="p-3 border-t border-slate-800 space-y-2 bg-black">
+        <div class="p-2.5 rounded-xl bg-dark-900 border border-slate-800 text-[11px] space-y-1.5">
+          <div class="flex items-center justify-between text-slate-400">
+            <span>RIP Status:</span>
+            <span class="text-[#78cde2] font-bold font-mono">ONLINE (i3200)</span>
+          </div>
+          <div class="flex items-center justify-between text-slate-400">
+            <span>Film Width:</span>
+            <span class="text-white font-mono">22" Roll (60cm)</span>
+          </div>
+        </div>
+
+        <button onclick="openStorefrontPreviewModal()"
+          class="w-full py-2 px-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-xs font-semibold text-slate-200 hover:text-white border border-slate-800 flex items-center justify-center gap-1.5 transition">
+          <i data-lucide="external-link" class="w-3.5 h-3.5 text-[#78cde2]"></i>
+          <span>Live Storefront Preview</span>
+        </button>
+
+        <button onclick="lockDashboardSession()"
+          class="w-full py-2 px-3 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 text-xs font-semibold text-rose-400 hover:text-rose-300 border border-rose-500/30 flex items-center justify-center gap-1.5 transition">
+          <i data-lucide="log-out" class="w-3.5 h-3.5"></i>
+          <span>Lock & Exit Admin</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- ======================================================== -->
+    <!-- MAIN CONTENT AREA                                        -->
+    <!-- ======================================================== -->
+    <main class="flex-1 flex flex-col min-w-0 bg-dark-900 overflow-y-auto">
+
+      <!-- Top Workspace Bar (Fixed width aligned) -->
+      <div class="border-b border-slate-800 bg-black/80 backdrop-blur sticky top-0 z-20">
+        <div class="max-w-[1550px] mx-auto p-4 sm:p-6 pb-4 flex flex-wrap items-center justify-between gap-4">
+          <div class="flex items-center gap-3">
+            <button onclick="toggleMobileNav()"
+              class="lg:hidden p-2 rounded-lg bg-slate-800 border border-slate-700 text-slate-300">
+              <i data-lucide="menu" class="w-5 h-5"></i>
+            </button>
+            <div>
+              <h2 id="pageHeaderTitle" class="text-lg sm:text-xl font-black text-white tracking-tight">Blackstone DTF
+                Production Pulse & Overview</h2>
+              <p id="pageHeaderSubtitle" class="text-xs text-slate-400">Real-time orders, gang sheet print queue, and
+                commercial DTF telemetry</p>
+            </div>
+          </div>
+
+          <!-- Quick Controls -->
+          <div class="flex items-center gap-2 sm:gap-3">
+            <!-- Workspace Dark / Light Theme Toggle -->
+            <div class="bg-black p-1 rounded-lg border border-slate-800 flex items-center text-xs" id="adminWsThemeToggle">
+              <button type="button" id="adminWsDarkBtn" onclick="setSiteTheme('dark')"
+                class="px-2.5 py-1 rounded-md font-black transition flex items-center gap-1.5 bg-[#78cde2] text-black">
+                <i data-lucide="moon" class="w-3.5 h-3.5"></i>
+                <span class="hidden sm:inline">Dark</span>
+              </button>
+              <button type="button" id="adminWsLightBtn" onclick="setSiteTheme('light')"
+                class="px-2.5 py-1 rounded-md font-semibold transition flex items-center gap-1.5 text-slate-400 hover:text-white">
+                <i data-lucide="sun" class="w-3.5 h-3.5 text-amber-400"></i>
+                <span class="hidden sm:inline">Light</span>
+              </button>
+            </div>
+
+            <!-- Currency Toggle -->
+            <div class="bg-black p-1 rounded-lg border border-slate-800 flex items-center text-xs">
+              <button id="currBtnINR" onclick="setCurrency('INR')"
+                class="px-2.5 py-1 rounded-md font-black transition bg-[#78cde2] text-black">₹ INR</button>
+              <button id="currBtnUSD" onclick="setCurrency('USD')"
+                class="px-2.5 py-1 rounded-md font-semibold transition text-slate-400 hover:text-white">$ USD</button>
+            </div>
+
+            <!-- Quick Action Buttons -->
+            <a href="admin.html"
+              class="px-3.5 py-1.5 rounded-lg bg-[#78cde2] hover:bg-[#99e1f2] text-black font-black text-xs shadow-md shadow-[#78cde2]/20 flex items-center gap-1.5 transition">
+              <i data-lucide="upload-cloud" class="w-3.5 h-3.5 text-black"></i>
+              <span>Admin Upload</span>
+            </a>
+
+            <button onclick="openNewOrderModal()"
+              class="px-3.5 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-[#78cde2]/40 text-[#78cde2] hover:text-white font-bold text-xs shadow-md flex items-center gap-1.5 transition">
+              <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+              <span class="hidden sm:inline">New</span> Order
+            </button>
+
+            <button onclick="syncAllStateToSupabase()" title="Sync data to Supabase"
+              class="p-2 rounded-lg bg-slate-900 hover:bg-slate-800 text-[#78cde2] border border-slate-800 transition">
+              <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+            </button>
+
+            <button onclick="exportFullDatabaseJSON()" title="Download Backup JSON"
+              class="p-2 rounded-lg bg-slate-900 hover:bg-slate-800 text-cyan-400 border border-slate-800 transition">
+              <i data-lucide="download" class="w-4 h-4"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Workspace Views (Max-width Constrained to prevent spreading) -->
+      <div class="max-w-[1550px] w-full mx-auto p-4 sm:p-6 space-y-6">
+
+        <!-- ======================================================== -->
+        <!-- TAB 1: OVERVIEW & TELEMETRY                              -->
+        <!-- ======================================================== -->
+        <section id="tab-overview" class="space-y-6">
+          <!-- 4 KPI Cards -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <!-- Revenue -->
+            <div
+              class="p-4 rounded-2xl bg-dark-850 border border-slate-800 relative overflow-hidden group hover:border-[#78cde2]/40 transition">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-semibold text-slate-400">Total Studio Revenue</span>
+                <div class="w-8 h-8 rounded-lg bg-[#78cde2]/10 text-[#78cde2] flex items-center justify-center">
+                  <i data-lucide="indian-rupee" class="w-4 h-4"></i>
+                </div>
+              </div>
+              <div id="kpiTotalRevenue" class="text-2xl font-black text-white font-mono tracking-tight">₹0</div>
+              <p id="kpiOrderCountSub" class="text-[11px] text-[#78cde2] font-medium mt-1">0 active orders</p>
+            </div>
+
+            <!-- Pending Artwork -->
+            <div
+              class="p-4 rounded-2xl bg-dark-850 border border-slate-800 relative overflow-hidden group hover:border-cyan-500/40 transition">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-semibold text-slate-400">Pending Artwork Preflight</span>
+                <div class="w-8 h-8 rounded-lg bg-cyan-500/10 text-cyan-400 flex items-center justify-center">
+                  <i data-lucide="alert-triangle" class="w-4 h-4"></i>
+                </div>
+              </div>
+              <div id="kpiPendingArtwork" class="text-2xl font-black text-white font-mono tracking-tight">0 Files</div>
+              <p class="text-[11px] text-cyan-400 font-medium mt-1">Requires 300 DPI preflight</p>
+            </div>
+
+            <!-- Print Queue Length -->
+            <div
+              class="p-4 rounded-2xl bg-dark-850 border border-slate-800 relative overflow-hidden group hover:border-[#78cde2]/40 transition">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-semibold text-slate-400">Print Queue Length</span>
+                <div class="w-8 h-8 rounded-lg bg-[#78cde2]/10 text-[#78cde2] flex items-center justify-center">
+                  <i data-lucide="printer" class="w-4 h-4"></i>
+                </div>
+              </div>
+              <div id="kpiQueueLength" class="text-2xl font-black text-white font-mono tracking-tight">0 Linear Ft</div>
+              <p class="text-[11px] text-[#78cde2] font-medium mt-1">22" Roll Continuous Feed</p>
+            </div>
+
+            <!-- Active Catalog Products -->
+            <div
+              class="p-4 rounded-2xl bg-dark-850 border border-slate-800 relative overflow-hidden group hover:border-pink-500/40 transition">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-semibold text-slate-400">Live Catalog SKUs</span>
+                <div class="w-8 h-8 rounded-lg bg-pink-500/10 text-pink-400 flex items-center justify-center">
+                  <i data-lucide="package-check" class="w-4 h-4"></i>
+                </div>
+              </div>
+              <div id="kpiActiveProducts" class="text-2xl font-black text-white font-mono tracking-tight">0 Products
+              </div>
+              <p class="text-[11px] text-pink-400 font-medium mt-1">Ready for direct customer checkout</p>
+            </div>
+          </div>
+
+          <!-- Revenue & Production Chart -->
+          <div class="p-5 rounded-2xl bg-dark-850 border border-slate-800 space-y-4">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                  <i data-lucide="trending-up" class="w-4 h-4 text-[#78cde2]"></i>
+                  Production Volume & Sales Velocity
+                </h3>
+                <p class="text-xs text-slate-400">Daily revenue and total linear feet printed</p>
+              </div>
+              <div class="flex items-center gap-1.5 bg-black p-1 rounded-lg border border-slate-800 text-xs">
+                <button onclick="updateChartTimeframe(7)"
+                  class="px-2.5 py-1 rounded font-semibold text-white bg-slate-800">7 Days</button>
+                <button onclick="updateChartTimeframe(30)"
+                  class="px-2.5 py-1 rounded font-semibold text-slate-400 hover:text-white">30 Days</button>
+              </div>
+            </div>
+            <div class="h-64 sm:h-72 w-full">
+              <canvas id="revenueChartCanvas"></canvas>
+            </div>
+          </div>
+
+          <!-- Pipeline Stages Summary Cards -->
+          <div id="overviewPipelineStages" class="grid grid-cols-2 sm:grid-cols-5 gap-3">
+            <!-- Injected dynamically by renderOverview() -->
+          </div>
+
+          <!-- Split Layout: Recent Orders + Low Consumables Stock -->
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Recent Orders Mini Table (2 cols) -->
+            <div class="lg:col-span-2 p-5 rounded-2xl bg-dark-850 border border-slate-800 space-y-3">
+              <div class="flex items-center justify-between">
+                <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                  <i data-lucide="clock" class="w-4 h-4 text-[#78cde2]"></i>
+                  Recent Production Orders
+                </h3>
+                <button onclick="switchTab('orders')"
+                  class="text-xs text-[#78cde2] hover:text-[#99e1f2] font-semibold flex items-center gap-1">
+                  View All Orders →
+                </button>
+              </div>
+              <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs">
+                  <thead class="text-[11px] uppercase tracking-wider text-slate-400 border-b border-slate-800">
+                    <tr>
+                      <th class="py-2.5 px-3">Order</th>
+                      <th class="py-2.5 px-3">Customer / Job</th>
+                      <th class="py-2.5 px-3">Stage</th>
+                      <th class="py-2.5 px-3 text-right">Total</th>
+                    </tr>
+                  </thead>
+                  <tbody id="overviewRecentOrdersBody" class="divide-y divide-slate-800/60 font-medium">
+                    <!-- Dynamic -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Consumables Quick Telemetry (1 col) -->
+            <div class="p-5 rounded-2xl bg-dark-850 border border-slate-800 space-y-4 flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between mb-3">
+                  <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                    <i data-lucide="alert-circle" class="w-4 h-4 text-cyan-400"></i>
+                    Consumables Status
+                  </h3>
+                  <button onclick="restockAllLowItems()"
+                    class="text-[11px] text-[#78cde2] hover:underline font-semibold">
+                    Restock All
+                  </button>
+                </div>
+                <div id="overviewLowStockList" class="space-y-3 text-xs">
+                  <!-- Dynamic -->
+                </div>
+              </div>
+              <button onclick="switchTab('inventory')"
+                class="w-full py-2 px-3 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-800 text-xs font-semibold text-slate-300 hover:text-white transition text-center">
+                Manage Full Inventory & Raw Stock →
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================================================== -->
+        <!-- TAB 2: ORDERS & RIP PRINT QUEUE                          -->
+        <!-- ======================================================== -->
+        <section id="tab-orders" class="space-y-6 hidden">
+          <!-- Filters & Action Toolbar -->
+          <div
+            class="p-4 rounded-2xl bg-dark-850 border border-slate-800 flex flex-wrap items-center justify-between gap-3">
+            <!-- Search -->
+            <div class="relative flex-1 min-w-[220px]">
+              <i data-lucide="search" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500"></i>
+              <input type="text" id="orderSearchInput" oninput="renderOrdersTable()"
+                placeholder="Search order ID, customer name, phone, or spec..."
+                class="w-full bg-black border border-slate-800 rounded-xl pl-9 pr-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[#78cde2]">
+            </div>
+
+            <!-- Stage Filter Pills -->
+            <div class="flex items-center gap-1.5 overflow-x-auto text-xs pb-1 sm:pb-0">
+              <button onclick="setOrderFilter('ALL', this)"
+                class="order-filter-btn px-3 py-1.5 rounded-lg font-black bg-[#78cde2] text-black whitespace-nowrap">All</button>
+              <button onclick="setOrderFilter('Pending Artwork', this)"
+                class="order-filter-btn px-3 py-1.5 rounded-lg font-semibold bg-slate-800/80 text-slate-300 hover:text-white whitespace-nowrap">Pending
+                Artwork</button>
+              <button onclick="setOrderFilter('In Print Queue', this)"
+                class="order-filter-btn px-3 py-1.5 rounded-lg font-semibold bg-slate-800/80 text-slate-300 hover:text-white whitespace-nowrap">In
+                Print Queue</button>
+              <button onclick="setOrderFilter('Printing (CMYK+W)', this)"
+                class="order-filter-btn px-3 py-1.5 rounded-lg font-semibold bg-slate-800/80 text-slate-300 hover:text-white whitespace-nowrap">Printing</button>
+              <button onclick="setOrderFilter('Curing & Cut', this)"
+                class="order-filter-btn px-3 py-1.5 rounded-lg font-semibold bg-slate-800/80 text-slate-300 hover:text-white whitespace-nowrap">Curing/Cut</button>
+              <button onclick="setOrderFilter('Ready / Dispatched', this)"
+                class="order-filter-btn px-3 py-1.5 rounded-lg font-semibold bg-slate-800/80 text-slate-300 hover:text-white whitespace-nowrap">Dispatched</button>
+            </div>
+
+            <!-- Export & Create Buttons -->
+            <div class="flex items-center gap-2">
+              <button onclick="exportOrdersCSV()"
+                class="px-3 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-xs font-semibold text-slate-200 border border-slate-800 flex items-center gap-1.5 transition">
+                <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5 text-emerald-400"></i>
+                <span>Export CSV</span>
+              </button>
+              <button onclick="openNewOrderModal()"
+                class="px-3.5 py-2 rounded-xl bg-[#78cde2] hover:bg-[#99e1f2] text-xs font-black text-black shadow-md shadow-[#78cde2]/20 flex items-center gap-1.5 transition">
+                <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+                <span>New Job</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Full Orders Table -->
+          <div class="p-5 rounded-2xl bg-dark-850 border border-slate-800 overflow-hidden">
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-xs">
+                <thead
+                  class="text-[11px] uppercase tracking-wider text-slate-400 border-b border-slate-800 bg-black/40">
+                  <tr>
+                    <th class="py-3 px-3">Order ID & Date</th>
+                    <th class="py-3 px-3">Customer & Contact</th>
+                    <th class="py-3 px-3">Job Spec & Linear Ft</th>
+                    <th class="py-3 px-3 text-center">Artwork Preflight</th>
+                    <th class="py-3 px-3">Production Stage</th>
+                    <th class="py-3 px-3 text-right">Total</th>
+                    <th class="py-3 px-3 text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="fullOrdersTableBody" class="divide-y divide-slate-800/70">
+                  <!-- Dynamic -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================================================== -->
+        <!-- TAB 3: PRODUCTS & APPAREL CATALOG                        -->
+        <!-- ======================================================== -->
+        <section id="tab-products" class="space-y-6 hidden">
+          <!-- Catalog Toolbar -->
+          <div
+            class="p-4 rounded-2xl bg-dark-850 border border-slate-800 flex flex-wrap items-center justify-between gap-3">
+            <div class="relative flex-1 min-w-[220px]">
+              <i data-lucide="search" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500"></i>
+              <input type="text" id="productSearchInput" oninput="renderProductsGrid()"
+                placeholder="Filter products by name or dimensions..."
+                class="w-full bg-black border border-slate-800 rounded-xl pl-9 pr-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[#78cde2]">
+            </div>
+
+            <!-- Categories -->
+            <div class="flex items-center gap-1.5 overflow-x-auto text-xs pb-1 sm:pb-0">
+              <button onclick="setProductFilter('ALL', this)"
+                class="prod-filter-btn px-3 py-1.5 rounded-lg font-black bg-[#78cde2] text-black whitespace-nowrap">All
+                Items</button>
+              <button onclick="setProductFilter('DTF Stickers', this)"
+                class="prod-filter-btn px-3 py-1.5 rounded-lg font-semibold bg-slate-800/80 text-slate-300 hover:text-white whitespace-nowrap">DTF
+                Stickers</button>
+              <button onclick="setProductFilter('Custom Gang Sheets', this)"
+                class="prod-filter-btn px-3 py-1.5 rounded-lg font-semibold bg-slate-800/80 text-slate-300 hover:text-white whitespace-nowrap">Custom
+                Gang Sheets</button>
+              <button onclick="setProductFilter('Apparel', this)"
+                class="prod-filter-btn px-3 py-1.5 rounded-lg font-semibold bg-slate-800/80 text-slate-300 hover:text-white whitespace-nowrap">Apparel
+                & Custom Tees</button>
+              <button onclick="setProductFilter('UV DTF Stickers', this)"
+                class="prod-filter-btn px-3 py-1.5 rounded-lg font-semibold bg-slate-800/80 text-slate-300 hover:text-white whitespace-nowrap">UV
+                DTF Decals</button>
+              <button onclick="setProductFilter('Typography', this)"
+                class="prod-filter-btn px-3 py-1.5 rounded-lg font-semibold bg-slate-800/80 text-slate-300 hover:text-white whitespace-nowrap">Typography</button>
+            </div>
+
+            <a href="admin.html"
+              class="px-3.5 py-2 rounded-xl bg-[#78cde2] hover:bg-[#99e1f2] text-xs font-black text-black shadow-md shadow-[#78cde2]/20 flex items-center gap-1.5 transition">
+              <i data-lucide="upload-cloud" class="w-3.5 h-3.5 text-black"></i>
+              <span>Admin Upload</span>
+            </a>
+          </div>
+
+          <!-- Catalog Cards Grid -->
+          <div id="productsCatalogGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            <!-- Dynamic -->
+          </div>
+        </section>
+
+        <!-- ======================================================== -->
+        <!-- TAB 4: 22" GANG SHEET BUILDER & PRICING ENGINE           -->
+        <!-- ======================================================== -->
+        <section id="tab-pricing" class="space-y-6 hidden">
+          <!-- Top Description Card -->
+          <div
+            class="p-5 rounded-2xl bg-gradient-to-r from-[#78cde2]/15 via-[#78cde2]/5 to-transparent border border-[#78cde2]/30 flex flex-wrap items-center justify-between gap-4">
+            <div class="space-y-1">
+              <div class="inline-flex items-center gap-2 text-xs font-bold text-[#78cde2]">
+                <i data-lucide="zap" class="w-4 h-4"></i>
+                <span>22" MASTER FILM ROLL CONFIGURATOR</span>
+              </div>
+              <h3 class="text-base font-black text-white">Commercial Roll Rates & Auto-Nesting Margin Engine</h3>
+              <p class="text-xs text-slate-400 max-w-2xl">
+                Configure wholesale Gang Sheet dimensions, capacity estimation guidelines, customer pricing, and
+                real-time production consumable cost calculation.
+              </p>
+            </div>
+            <button onclick="openGangSizeModal()"
+              class="px-4 py-2 rounded-xl bg-[#78cde2] hover:bg-[#99e1f2] text-xs font-black text-black shadow-lg shadow-[#78cde2]/20 flex items-center gap-1.5 transition">
+              <i data-lucide="plus" class="w-4 h-4"></i>
+              <span>Add Custom Roll Size</span>
+            </button>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Gang Sheet Tiers Table (2 cols) -->
+            <div class="lg:col-span-2 p-5 rounded-2xl bg-dark-850 border border-slate-800 space-y-4">
+              <h4 class="text-sm font-bold text-white flex items-center gap-2">
+                <i data-lucide="sliders" class="w-4 h-4 text-[#78cde2]"></i>
+                Active Gang Sheet Tiers & Specifications
+              </h4>
+              <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs">
+                  <thead
+                    class="text-[11px] uppercase tracking-wider text-slate-400 border-b border-slate-800 bg-black/40">
+                    <tr>
+                      <th class="py-2.5 px-3">Tier Name</th>
+                      <th class="py-2.5 px-3">Dimensions</th>
+                      <th class="py-2.5 px-3">Capacity Guidance</th>
+                      <th class="py-2.5 px-3">Retail Price</th>
+                      <th class="py-2.5 px-3">Est. Cost</th>
+                      <th class="py-2.5 px-3 text-right">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="gangSheetTiersBody" class="divide-y divide-slate-800/60 font-medium">
+                    <!-- Dynamic -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Real-time Gang Sheet Profit Calculator (1 col) -->
+            <div class="p-5 rounded-2xl bg-dark-850 border border-slate-800 space-y-4 flex flex-col justify-between">
+              <div class="space-y-4">
+                <h4 class="text-sm font-bold text-white flex items-center gap-2">
+                  <i data-lucide="calculator" class="w-4 h-4 text-[#78cde2]"></i>
+                  Live Order Margin Simulator
+                </h4>
+
+                <div class="space-y-3 text-xs">
+                  <div>
+                    <label class="block text-slate-400 font-semibold mb-1">Select Sheet Size:</label>
+                    <select id="calcSheetSizeSelect" onchange="runProfitCalculator()"
+                      class="w-full bg-black border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-[#78cde2]">
+                      <!-- Populated dynamically -->
+                    </select>
+                  </div>
+
+                  <div>
+                    <label class="block text-slate-400 font-semibold mb-1">Quantity (Sheets):</label>
+                    <input type="number" id="calcQuantityInput" min="1" value="5" oninput="runProfitCalculator()"
+                      class="w-full bg-black border border-slate-800 rounded-xl px-3 py-2 text-white font-mono focus:outline-none focus:border-[#78cde2]">
+                  </div>
+
+                  <div id="calcDiscountBadge"
+                    class="p-2 rounded-xl bg-[#78cde2]/15 border border-[#78cde2]/30 text-[#78cde2] text-[11px] font-bold text-center">
+                    Wholesale Volume Tier: 15% Discount
+                  </div>
+
+                  <div class="p-3 rounded-xl bg-black border border-slate-800 space-y-2 pt-3">
+                    <div class="flex items-center justify-between text-slate-400">
+                      <span>Customer Price:</span>
+                      <strong id="calcCustomerTotal" class="text-white font-mono text-sm">₹0</strong>
+                    </div>
+                    <div class="flex items-center justify-between text-slate-400">
+                      <span>Est. Consumables Cost:</span>
+                      <span id="calcProductionCost" class="text-rose-400 font-mono">₹0</span>
+                    </div>
+                    <div class="border-t border-slate-800 pt-2 flex items-center justify-between font-bold">
+                      <span class="text-[#78cde2]">Net Estimated Profit:</span>
+                      <strong id="calcNetProfit" class="text-[#78cde2] font-mono text-base">₹0 (0%)</strong>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="text-[11px] text-slate-500 italic">
+                * Cost calculation based on ₹195/linear ft (PET film + CMYK + Dual White + TPU powder).
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================================================== -->
+        <!-- TAB 5: WEBSITE CMS & STOREFRONT LINKS                    -->
+        <!-- ======================================================== -->
+        <section id="tab-website" class="space-y-6 hidden">
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Left: Storefront Details & Social Links (2 cols) -->
+            <div class="lg:col-span-2 p-5 rounded-2xl bg-dark-850 border border-slate-800 space-y-5">
+              <div class="flex items-center justify-between">
+                <h4 class="text-sm font-bold text-white flex items-center gap-2">
+                  <i data-lucide="settings" class="w-4 h-4 text-indigo-400"></i>
+                  Storefront Identity & Contact Information
+                </h4>
+                <button onclick="saveWebsiteCMS()"
+                  class="px-3.5 py-1.5 rounded-lg bg-[#78cde2] hover:bg-[#99e1f2] text-black font-black text-xs shadow-md shadow-[#78cde2]/20 transition">
+                  Save Changes
+                </button>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+                <div>
+                  <label class="block text-slate-400 font-semibold mb-1">Brand Name:</label>
+                  <input type="text" id="cmsBrandName"
+                    class="w-full bg-black border border-slate-800 rounded-xl px-3 py-2 text-white font-medium focus:outline-none focus:border-[#78cde2]">
+                </div>
+                <div>
+                  <label class="block text-slate-400 font-semibold mb-1">WhatsApp & Call Support:</label>
+                  <input type="text" id="cmsSupportPhone"
+                    class="w-full bg-black border border-slate-800 rounded-xl px-3 py-2 text-white font-mono focus:outline-none focus:border-[#78cde2]">
+                </div>
+              </div>
+
+              <!-- Announcement Banner -->
+              <div class="p-4 rounded-xl bg-black border border-slate-800 space-y-3 text-xs">
+                <div class="flex items-center justify-between">
+                  <label class="font-bold text-slate-300">Top Announcement Marquee Banner</label>
+                  <label class="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" id="cmsBannerActive" class="sr-only peer" checked>
+                    <div
+                      class="w-9 h-5 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[#78cde2]">
+                    </div>
+                  </label>
+                </div>
+                <textarea id="cmsAnnouncementText" rows="2"
+                  class="w-full bg-dark-900 border border-slate-800 rounded-xl p-2.5 text-white focus:outline-none focus:border-[#78cde2]"></textarea>
+              </div>
+
+              <!-- Hero Content -->
+              <div class="space-y-3 text-xs">
+                <h5 class="font-bold text-slate-300">Hero Section Content</h5>
+                <div>
+                  <label class="block text-slate-400 font-semibold mb-1">Main Headline:</label>
+                  <input type="text" id="cmsHeroHeadline"
+                    class="w-full bg-black border border-slate-800 rounded-xl px-3 py-2 text-white font-bold focus:outline-none focus:border-[#78cde2]">
+                </div>
+                <div>
+                  <label class="block text-slate-400 font-semibold mb-1">Subtitle / Value Proposition:</label>
+                  <textarea id="cmsHeroSubtitle" rows="2"
+                    class="w-full bg-black border border-slate-800 rounded-xl p-2.5 text-white focus:outline-none focus:border-[#78cde2]"></textarea>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label class="block text-slate-400 font-semibold mb-1">Hero CTA Button Text:</label>
+                    <input type="text" id="cmsHeroCta"
+                      class="w-full bg-black border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-[#78cde2]">
+                  </div>
+                  <div>
+                    <label class="block text-slate-400 font-semibold mb-1">Free Shipping Minimum (₹):</label>
+                    <input type="number" id="cmsFreeShipInput"
+                      class="w-full bg-black border border-slate-800 rounded-xl px-3 py-2 text-white font-mono focus:outline-none focus:border-[#78cde2]">
+                  </div>
+                </div>
+              </div>
+
+              <!-- Heat Press Instructions -->
+              <div class="p-4 rounded-xl bg-black border border-slate-800 space-y-3 text-xs">
+                <h5 class="font-bold text-slate-300">Customer Heat Pressing Parameters (Printed on Packaging)</h5>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <div>
+                    <label class="block text-slate-400 mb-1">Temperature:</label>
+                    <input type="text" id="cmsPressTemp"
+                      class="w-full bg-dark-900 border border-slate-800 rounded-lg px-2.5 py-1.5 text-white font-mono">
+                  </div>
+                  <div>
+                    <label class="block text-slate-400 mb-1">Dwell Time:</label>
+                    <input type="text" id="cmsPressTime"
+                      class="w-full bg-dark-900 border border-slate-800 rounded-lg px-2.5 py-1.5 text-white font-mono">
+                  </div>
+                  <div>
+                    <label class="block text-slate-400 mb-1">Peel Style:</label>
+                    <input type="text" id="cmsPeelType"
+                      class="w-full bg-dark-900 border border-slate-800 rounded-lg px-2.5 py-1.5 text-white font-mono">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right: Discount Coupons Manager (1 col) -->
+            <div class="p-5 rounded-2xl bg-dark-850 border border-slate-800 space-y-4 flex flex-col justify-between">
+              <div class="space-y-4">
+                <div class="flex items-center justify-between">
+                  <h4 class="text-sm font-bold text-white flex items-center gap-2">
+                    <i data-lucide="tag" class="w-4 h-4 text-[#78cde2]"></i>
+                    Discount Coupon Codes
+                  </h4>
+                  <span class="text-[11px] text-slate-400">Live Checkout</span>
+                </div>
+
+                <!-- Add Coupon Input -->
+                <div class="p-3 rounded-xl bg-black border border-slate-800 space-y-2 text-xs">
+                  <div class="grid grid-cols-2 gap-2">
+                    <input type="text" id="newCouponCode" placeholder="CODE (e.g. DTF25)"
+                      class="bg-dark-900 border border-slate-800 rounded-lg px-2.5 py-1.5 text-white uppercase font-mono font-bold">
+                    <input type="number" id="newCouponPct" placeholder="% Off (e.g. 25)"
+                      class="bg-dark-900 border border-slate-800 rounded-lg px-2.5 py-1.5 text-white font-mono">
+                  </div>
+                  <button onclick="addDiscountCoupon()"
+                    class="w-full py-1.5 rounded-lg bg-[#78cde2] hover:bg-[#99e1f2] text-black font-black text-xs transition">
+                    + Add Coupon Code
+                  </button>
+                </div>
+
+                <!-- Coupon list -->
+                <div id="couponsListContainer" class="space-y-2 text-xs">
+                  <!-- Dynamic -->
+                </div>
+              </div>
+
+              <div class="border-t border-slate-800 pt-3">
+                <button onclick="openStorefrontPreviewModal()"
+                  class="w-full py-2 px-3 rounded-xl bg-[#78cde2]/15 hover:bg-[#78cde2]/25 text-[#78cde2] hover:text-white border border-[#78cde2]/40 text-xs font-bold transition flex items-center justify-center gap-2">
+                  <i data-lucide="eye" class="w-4 h-4 text-[#78cde2]"></i>
+                  <span>Preview Live Store Appearance</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================================================== -->
+        <!-- TAB 6: CONSUMABLES & INVENTORY                           -->
+        <!-- ======================================================== -->
+        <section id="tab-inventory" class="space-y-6 hidden">
+          <div
+            class="p-4 rounded-2xl bg-dark-850 border border-slate-800 flex flex-wrap items-center justify-between gap-4">
+            <div class="space-y-0.5">
+              <h4 class="text-sm font-bold text-white flex items-center gap-2">
+                <i data-lucide="package" class="w-4 h-4 text-emerald-400"></i>
+                DTF Printing Consumables & Stock Levels
+              </h4>
+              <p class="text-xs text-slate-400">Track PET film, pigment ink, and TPU powder reserves to prevent printing
+                bottlenecks</p>
+            </div>
+            <button onclick="restockAllLowItems()"
+              class="px-3.5 py-1.5 rounded-lg bg-[#78cde2] hover:bg-[#99e1f2] text-black font-black text-xs shadow-md shadow-[#78cde2]/20 flex items-center gap-1.5 transition">
+              <i data-lucide="check-check" class="w-3.5 h-3.5"></i>
+              <span>Restock All Low Supplies</span>
+            </button>
+          </div>
+
+          <div id="inventoryGridContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <!-- Dynamic -->
+          </div>
+        </section>
+
+        <!-- ======================================================== -->
+        <!-- TAB 7: SUPABASE DATABASE LINK                            -->
+        <!-- ======================================================== -->
+        <section id="tab-supabase" class="space-y-6 hidden">
+          <!-- Connection Config -->
+          <div class="p-5 rounded-2xl bg-dark-850 border border-slate-800 space-y-4">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+              <div class="space-y-0.5">
+                <div class="flex items-center gap-2">
+                  <span id="supabaseStatusDot" class="w-2 h-2 rounded-full bg-slate-500"></span>
+                  <h4 id="supabaseStatusText" class="text-sm font-bold text-white">Supabase: Not Connected</h4>
+                </div>
+                <p class="text-xs text-slate-400">Link your PostgreSQL database & Supabase Storage for multi-device sync
+                and live order capture</p>
+              </div>
+
+              <div class="flex items-center gap-2">
+                <button onclick="connectSupabaseClient()"
+                  class="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs transition">
+                  Connect Client
+                </button>
+                <button onclick="syncAllStateToSupabase()"
+                  class="px-3 py-1.5 rounded-lg bg-[#78cde2] hover:bg-[#99e1f2] text-black font-black text-xs transition">
+                  Push Full Sync
+                </button>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+              <div>
+                <label class="block text-slate-400 font-semibold mb-1">Supabase Project URL:</label>
+                <input type="text" id="sbUrlInput" value="https://bxdmhbfpprnrcexwxrzh.supabase.co" placeholder="https://xyzcompany.supabase.co"
+                  class="w-full bg-black border border-slate-800 rounded-xl px-3 py-2 text-white font-mono focus:outline-none focus:border-[#78cde2]">
+              </div>
+              <div>
+                <label class="block text-slate-400 font-semibold mb-1">Supabase Anon Public API Key:</label>
+                <input type="password" id="sbKeyInput" value="sb_publishable_tGKzE6gt-zcaRpkMD2jhmQ_KmhvkHAL" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                  class="w-full bg-black border border-slate-800 rounded-xl px-3 py-2 text-white font-mono focus:outline-none focus:border-[#78cde2]">
+              </div>
+            </div>
+
+            <!-- Sync Log Terminal -->
+            <div class="space-y-1.5">
+              <label class="block text-[11px] font-mono text-slate-400 uppercase tracking-wider">Sync Log & Network
+                Events:</label>
+              <div id="supabaseSyncLog"
+                class="p-3 rounded-xl bg-black border border-slate-800 h-28 overflow-y-auto font-mono text-[11px] text-[#78cde2] space-y-1">
+                <div>[SYSTEM] Ready to connect to Supabase Cloud PostgreSQL database.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- SQL Migration & Integration Code -->
+          <div class="p-5 rounded-2xl bg-dark-850 border border-slate-800 space-y-3">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+              <div class="flex items-center gap-2">
+                <button id="codeTabSql" onclick="switchCodeTab('sql')"
+                  class="px-3 py-1 rounded-md font-black bg-[#78cde2] text-black text-xs">1-Click SQL
+                  Schema</button>
+                <button id="codeTabJs" onclick="switchCodeTab('js')"
+                  class="px-3 py-1 rounded-md font-semibold text-slate-400 hover:text-white text-xs">Frontend Storefront
+                  JS</button>
+              </div>
+              <button onclick="copyActiveCodeSnippet()"
+                class="px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs border border-slate-800 flex items-center gap-1.5 transition">
+                <i data-lucide="copy" class="w-3.5 h-3.5 text-[#78cde2]"></i>
+                <span id="copyBtnLabel">Copy Code</span>
+              </button>
+            </div>
+
+            <pre
+              class="p-4 rounded-xl bg-black border border-slate-800 overflow-x-auto text-xs font-mono text-slate-300 max-h-96 leading-relaxed"><code id="supabaseCodeDisplay"></code></pre>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- MODAL 1: ARTWORK PREFLIGHT INSPECTION                    -->
+  <!-- ======================================================== -->
+  <div id="artworkModal"
+    class="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div
+      class="bg-dark-900 border border-[#78cde2]/30 rounded-2xl w-full max-w-2xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh]">
+      <!-- Modal Header -->
+      <div class="p-4 border-b border-slate-800 flex items-center justify-between">
+        <div>
+          <h4 id="artModalTitle" class="text-sm font-bold text-white">Artwork Preflight & Transparency Check</h4>
+          <p id="artModalSub" class="text-xs text-slate-400">Order: DTF-1048 • 300 DPI Transparent PNG</p>
+        </div>
+        <button onclick="closeArtworkModal()" class="text-slate-400 hover:text-white p-1 rounded-lg">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <!-- Preview Canvas Viewport -->
+      <div class="p-4 flex-1 flex flex-col items-center justify-center min-h-[320px] bg-black overflow-hidden">
+        <div id="artModalPreviewContainer"
+          class="checkerboard-light w-full h-72 rounded-xl border border-slate-800 flex items-center justify-center p-4 relative transition-colors duration-200">
+          <img id="artModalImg" src="" alt="DTF Artwork Preview"
+            class="max-h-full max-w-full object-contain filter drop-shadow-md transition-transform duration-200">
+        </div>
+
+        <!-- Preflight Controls -->
+        <div class="flex items-center gap-2 mt-3 text-xs">
+          <button onclick="toggleArtworkBg()"
+            class="px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-300 font-semibold border border-slate-800 flex items-center gap-1.5 transition">
+            <i data-lucide="contrast" class="w-3.5 h-3.5"></i>
+            <span>Toggle Dark/Light Grid</span>
+          </button>
+          <button onclick="zoomArtworkPreview()"
+            class="px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-300 font-semibold border border-slate-800 flex items-center gap-1.5 transition">
+            <i data-lucide="zoom-in" class="w-3.5 h-3.5"></i>
+            <span>Zoom In/Out</span>
+          </button>
+          <button onclick="downloadArtworkMockup()"
+            class="px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-[#78cde2] font-semibold border border-slate-800 flex items-center gap-1.5 transition">
+            <i data-lucide="download" class="w-3.5 h-3.5"></i>
+            <span>Download High-Res PNG</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Action Footer -->
+      <div class="p-4 border-t border-slate-800 bg-black/60 flex items-center justify-between">
+        <button onclick="flagArtworkRevision()"
+          class="px-3.5 py-2 rounded-xl bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/40 text-xs font-bold transition">
+          Flag for Re-upload (Low DPI)
+        </button>
+        <div class="flex items-center gap-2">
+          <button onclick="closeArtworkModal()"
+            class="px-3.5 py-2 rounded-xl bg-slate-900 text-slate-300 text-xs font-semibold hover:bg-slate-800 border border-slate-800 transition">
+            Close
+          </button>
+          <button onclick="approveArtworkForPrint()"
+            class="px-4 py-2 rounded-xl bg-[#78cde2] hover:bg-[#99e1f2] text-black font-black text-xs shadow-lg shadow-[#78cde2]/20 transition">
+            ✓ Approve & Send to RIP Queue
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- MODAL 2: PRODUCT CREATE / EDIT                           -->
+  <!-- ======================================================== -->
+  <div id="productModal"
+    class="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div
+      class="bg-dark-900 border border-[#78cde2]/30 rounded-2xl w-full max-w-md overflow-hidden shadow-2xl p-5 space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <h4 id="prodModalTitle" class="text-sm font-bold text-white">Add New DTF Product</h4>
+        <button onclick="closeProductModal()" class="text-slate-400 hover:text-white">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <input type="hidden" id="prodModalEditId" value="">
+
+      <div class="space-y-3 text-xs">
+        <div>
+          <label class="block text-slate-400 font-semibold mb-1">Product Name:</label>
+          <input type="text" id="prodModalName" placeholder="e.g. Cyber Samurai Oversized Tee"
+            class="w-full bg-black border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-[#78cde2]">
+        </div>
+
+        <div>
+          <label class="block text-slate-400 font-semibold mb-1">Category:</label>
+          <select id="prodModalCat"
+            class="w-full bg-black border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-[#78cde2]">
+            <option value="DTF Stickers">DTF Stickers</option>
+            <option value="Custom Gang Sheets">Custom Gang Sheets</option>
+            <option value="Apparel">Apparel & Custom Tees</option>
+            <option value="UV DTF Stickers">UV DTF Stickers</option>
+            <option value="Typography">Typography</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-slate-400 font-semibold mb-1">Dimensions / Spec:</label>
+          <input type="text" id="prodModalDims" placeholder="e.g. 10&quot; × 14&quot; Back Print"
+            class="w-full bg-black border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-[#78cde2]">
+        </div>
+
+        <div>
+          <label class="block text-slate-400 font-semibold mb-1">Price (₹ INR):</label>
+          <input type="number" id="prodModalPrice" placeholder="e.g. 899"
+            class="w-full bg-black border border-slate-800 rounded-xl px-3 py-2 text-white font-mono focus:outline-none focus:border-[#78cde2]">
+        </div>
+
+        <div class="flex items-center gap-2 pt-1">
+          <input type="checkbox" id="prodModalFeatured"
+            class="rounded bg-black border-slate-800 text-[#78cde2] focus:ring-0">
+          <label for="prodModalFeatured" class="text-slate-300 font-medium">Mark as Featured on Homepage</label>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-800">
+        <button onclick="closeProductModal()"
+          class="px-3.5 py-2 rounded-xl bg-slate-900 text-slate-300 text-xs font-semibold hover:bg-slate-800 border border-slate-800">Cancel</button>
+        <button onclick="saveProductFromModal()"
+          class="px-4 py-2 rounded-xl bg-[#78cde2] hover:bg-[#99e1f2] text-black font-black text-xs transition">Save
+          Product</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- MODAL 3: NEW ORDER ENTRY                                 -->
+  <!-- ======================================================== -->
+  <div id="newOrderModal"
+    class="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div
+      class="bg-dark-900 border border-[#78cde2]/30 rounded-2xl w-full max-w-md overflow-hidden shadow-2xl p-5 space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <h4 class="text-sm font-bold text-white">Create Direct Production Job</h4>
+        <button onclick="closeNewOrderModal()" class="text-slate-400 hover:text-white">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <div class="space-y-3 text-xs">
+        <div>
+          <label class="block text-slate-400 font-semibold mb-1">Customer / Brand Name:</label>
+          <input type="text" id="newOrdCustomer" placeholder="e.g. Vortex Streetwear"
+            class="w-full bg-black border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-[#78cde2]">
+        </div>
+
+        <div>
+          <label class="block text-slate-400 font-semibold mb-1">WhatsApp / Phone:</label>
+          <input type="text" id="newOrdPhone" placeholder="+91 98765 43210"
+            class="w-full bg-black border border-slate-800 rounded-xl px-3 py-2 text-white font-mono focus:outline-none focus:border-[#78cde2]">
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-slate-400 font-semibold mb-1">Job Type:</label>
+            <select id="newOrdType"
+              class="w-full bg-black border border-slate-800 rounded-xl px-2.5 py-2 text-white focus:outline-none focus:border-[#78cde2]">
+              <option value="Custom Gang Sheet">Custom Gang Sheet</option>
+              <option value="Custom Apparel">Custom Apparel</option>
+              <option value="DTF Sticker">DTF Sticker</option>
+              <option value="UV DTF Sticker">UV DTF Sticker</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-slate-400 font-semibold mb-1">Linear Feet:</label>
+            <input type="number" step="0.5" id="newOrdFeet" placeholder="5.0"
+              class="w-full bg-black border border-slate-800 rounded-xl px-2.5 py-2 text-white font-mono focus:outline-none focus:border-[#78cde2]">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-slate-400 font-semibold mb-1">Job Specification / Notes:</label>
+          <input type="text" id="newOrdSpec" placeholder="e.g. 22&quot; × 60&quot; Roll - 300 DPI Transparent"
+            class="w-full bg-black border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-[#78cde2]">
+        </div>
+
+        <div>
+          <label class="block text-slate-400 font-semibold mb-1">Total Bill (₹ INR):</label>
+          <input type="number" id="newOrdTotal" placeholder="899"
+            class="w-full bg-black border border-slate-800 rounded-xl px-3 py-2 text-white font-mono font-bold focus:outline-none focus:border-[#78cde2]">
+        </div>
+      </div>
+
+      <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-800">
+        <button onclick="closeNewOrderModal()"
+          class="px-3.5 py-2 rounded-xl bg-slate-900 text-slate-300 text-xs font-semibold hover:bg-slate-800 border border-slate-800">Cancel</button>
+        <button onclick="submitNewOrder()"
+          class="px-4 py-2 rounded-xl bg-[#78cde2] hover:bg-[#99e1f2] text-black font-black text-xs transition">Create
+          Order</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- MODAL 4: GANG SHEET TIER ADD / EDIT                      -->
+  <!-- ======================================================== -->
+  <div id="gangSizeModal"
+    class="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div
+      class="bg-dark-900 border border-[#78cde2]/30 rounded-2xl w-full max-w-md overflow-hidden shadow-2xl p-5 space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <h4 class="text-sm font-bold text-white">Add 22" Gang Roll Tier</h4>
+        <button onclick="closeGangSizeModal()" class="text-slate-400 hover:text-white">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <div class="space-y-3 text-xs">
+        <div>
+          <label class="block text-slate-400 font-semibold mb-1">Tier Name:</label>
+          <input type="text" id="newTierName" placeholder="e.g. Master Production Roll"
+            class="w-full bg-black border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-[#78cde2]">
+        </div>
+
+        <div>
+          <label class="block text-slate-400 font-semibold mb-1">Dimensions:</label>
+          <input type="text" id="newTierDims" placeholder="e.g. 22&quot; × 180&quot; (15 Ft)"
+            class="w-full bg-black border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-[#78cde2]">
+        </div>
+
+        <div>
+          <label class="block text-slate-400 font-semibold mb-1">Capacity Guidance:</label>
+          <input type="text" id="newTierCap" placeholder="e.g. Fits ~70 Logos or 20 Full Fronts"
+            class="w-full bg-black border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-[#78cde2]">
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-slate-400 font-semibold mb-1">Retail Price (₹):</label>
+            <input type="number" id="newTierPrice" placeholder="2499"
+              class="w-full bg-black border border-slate-800 rounded-xl px-2.5 py-2 text-white font-mono focus:outline-none focus:border-[#78cde2]">
+          </div>
+          <div>
+            <label class="block text-slate-400 font-semibold mb-1">Consumables Cost (₹):</label>
+            <input type="number" id="newTierCost" placeholder="550"
+              class="w-full bg-black border border-slate-800 rounded-xl px-2.5 py-2 text-white font-mono focus:outline-none focus:border-[#78cde2]">
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-800">
+        <button onclick="closeGangSizeModal()"
+          class="px-3.5 py-2 rounded-xl bg-slate-900 text-slate-300 text-xs font-semibold hover:bg-slate-800 border border-slate-800">Cancel</button>
+        <button onclick="saveNewGangTier()"
+          class="px-4 py-2 rounded-xl bg-[#78cde2] hover:bg-[#99e1f2] text-black font-black text-xs transition">Save
+          Tier</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- MODAL 5: STOREFRONT LIVE PREVIEW                         -->
+  <!-- ======================================================== -->
+  <div id="storefrontPreviewModal"
+    class="fixed inset-0 bg-black/90 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+    <div
+      class="bg-dark-900 border border-[#78cde2]/30 rounded-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col shadow-2xl">
+      <div class="p-4 border-b border-slate-800 flex items-center justify-between bg-black">
+        <div class="flex items-center gap-2">
+          <span class="w-3 h-3 rounded-full bg-rose-500"></span>
+          <span class="w-3 h-3 rounded-full bg-amber-500"></span>
+          <span class="w-3 h-3 rounded-full bg-[#78cde2]"></span>
+          <span class="text-xs text-slate-400 ml-2 font-mono">https://blackstone-dtf-studio.com (Customer View
+            Simulator)</span>
+        </div>
+        <button onclick="closeStorefrontPreviewModal()" class="text-slate-400 hover:text-white p-1">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <div class="flex-1 overflow-y-auto bg-black text-slate-100">
+        <!-- Live Banner -->
+        <div id="prevStoreBanner"
+          class="bg-[#78cde2] py-1.5 px-4 text-center text-xs font-black text-black tracking-wide">
+          <!-- Injected dynamically -->
+        </div>
+
+        <!-- Simulated Store Header -->
+        <div class="px-6 py-4 border-b border-slate-800 flex items-center justify-between bg-black">
+          <div id="prevStoreBrand" class="flex items-center gap-2 font-black text-base text-white tracking-wider">
+            BLACKSTONE <span class="text-[#78cde2]">DTF</span> STUDIO
+          </div>
+          <div class="flex items-center gap-4 text-xs font-medium text-slate-300">
+            <span>DTF Transfers</span>
+            <span>Custom Apparel</span>
+            <span>22" Gang Builder</span>
+          </div>
+        </div>
+
+        <!-- Hero section -->
+        <div class="px-6 py-10 text-center space-y-3 max-w-2xl mx-auto">
+          <span
+            class="px-3 py-1 rounded-full bg-[#78cde2]/15 border border-[#78cde2]/30 text-[#78cde2] font-bold text-xs uppercase tracking-wider">
+            Commercial DTF Transfers India
+          </span>
+          <h2 id="prevStoreHeadline" class="text-2xl sm:text-3xl font-black text-white tracking-tight leading-tight">
+            <!-- Dynamic -->
+          </h2>
+          <p id="prevStoreSub" class="text-xs sm:text-sm text-slate-400">
+            <!-- Dynamic -->
+          </p>
+          <div class="pt-2">
+            <button id="prevStoreCta"
+              class="px-6 py-2.5 rounded-xl bg-[#78cde2] font-black text-xs text-black shadow-lg shadow-[#78cde2]/25">
+              <!-- Dynamic -->
+            </button>
+          </div>
+        </div>
+
+        <!-- Catalog showcase -->
+        <div class="p-6 border-t border-slate-800/80 space-y-4">
+          <h3 class="text-sm font-bold text-white">Featured Studio Catalog</h3>
+          <div id="prevStoreProducts" class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            <!-- Dynamic -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Stack -->
+  <div id="toastContainer" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 max-w-sm pointer-events-none"></div>
+
+  <!-- External Script -->
+  <script src="admindashboard.js"></script>
+</body>
+
+</html>
