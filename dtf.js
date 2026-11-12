@@ -711,14 +711,14 @@ function lockAdminSession() {
 }
 
 // -------------------------------------------------------------------------
-// 8.5. DARK / LIGHT BACKGROUND THEME CONTROLLER
+// 8.5. DARK / LIGHT BACKGROUND THEME CONTROLLER (BLUE & WHITE EDITION)
 // -------------------------------------------------------------------------
 function getSiteTheme() {
-    return localStorage.getItem('blackstone_site_theme') || 'dark';
+    return localStorage.getItem('blackstone_site_theme') || 'light';
 }
 
 function setSiteTheme(mode) {
-    if (mode !== 'light' && mode !== 'dark') mode = 'dark';
+    if (mode !== 'light' && mode !== 'dark') mode = 'light';
     localStorage.setItem('blackstone_site_theme', mode);
     applySiteTheme(mode);
 }
@@ -743,10 +743,10 @@ function applySiteTheme(mode) {
     const lightBtn = document.getElementById('theme-light-btn');
     if (darkBtn && lightBtn) {
         if (isLight) {
-            darkBtn.className = 'px-2 sm:px-2.5 py-1 rounded-lg text-xs font-semibold text-slate-500 hover:text-slate-900 transition flex items-center gap-1.5';
-            lightBtn.className = 'px-2 sm:px-2.5 py-1 rounded-lg text-xs font-black transition flex items-center gap-1.5 bg-[#78cde2] text-black shadow-sm';
+            darkBtn.className = 'px-2 sm:px-2.5 py-1 rounded-lg text-xs font-semibold text-slate-500 hover:text-blue-600 transition flex items-center gap-1.5';
+            lightBtn.className = 'px-2 sm:px-2.5 py-1 rounded-lg text-xs font-black transition flex items-center gap-1.5 bg-blue-600 text-white shadow-sm';
         } else {
-            darkBtn.className = 'px-2 sm:px-2.5 py-1 rounded-lg text-xs font-bold transition flex items-center gap-1.5 bg-[#78cde2] text-black shadow-sm';
+            darkBtn.className = 'px-2 sm:px-2.5 py-1 rounded-lg text-xs font-bold transition flex items-center gap-1.5 bg-blue-600 text-white shadow-sm';
             lightBtn.className = 'px-2 sm:px-2.5 py-1 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition flex items-center gap-1.5';
         }
     }

@@ -1,16 +1,20 @@
 /* =========================================================================
-   BLACKSTONE DTF STUDIO - BLACK & #78cde2 CYAN THEME (dtf.css)
+   BLACKSTONE DTF STUDIO - MODERN BLUE & WHITE THEME (dtf.css)
+   Clean Royal Blue (#2563eb) & Crisp White (#ffffff) Edition
    ========================================================================= */
 
 :root {
-    --brand-cyan: #78cde2;
-    --brand-cyan-light: #a5e3f2;
-    --brand-cyan-dark: #4bb8d4;
-    --bg-pure-black: #000000;
-    --bg-dark-card: #070a10;
-    --bg-dark-elevated: #0d121c;
-    --border-cyan-subtle: rgba(120, 205, 226, 0.25);
-    --border-cyan-glow: rgba(120, 205, 226, 0.5);
+    --brand-blue: #2563eb;
+    --brand-blue-hover: #1d4ed8;
+    --brand-blue-light: #60a5fa;
+    --brand-blue-ice: #eff6ff;
+    --brand-blue-subtle: #dbeafe;
+    --bg-main: #f8fafc;
+    --bg-card: #ffffff;
+    --border-subtle: #e2e8f0;
+    --border-blue: #bfdbfe;
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
 }
 
 /* Custom Scrollbar */
@@ -20,55 +24,57 @@
 }
 
 ::-webkit-scrollbar-track {
-    background: #000000;
+    background: #f1f5f9;
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #1e293b;
+    background: #93c5fd;
     border-radius: 3px;
-    border: 1px solid rgba(120, 205, 226, 0.2);
+    border: 1px solid #bfdbfe;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #78cde2;
+    background: #2563eb;
 }
 
-/* Selection Color: Electric Cyan + Jet Black */
+/* Selection Color: Royal Blue + White */
 ::selection {
-    background-color: #78cde2;
-    color: #000000;
+    background-color: #2563eb;
+    color: #ffffff;
 }
 
-/* DTF Film / Transparency Checkerboards */
-.checkerboard-dark {
-    background-color: #06090f;
-    background-image: radial-gradient(rgba(120, 205, 226, 0.15) 1px, transparent 1px);
-    background-size: 14px 14px;
-}
-
-.checkerboard-light {
-    background-color: #f1f7f9;
+/* DTF Transparency Checkerboards */
+.checkerboard-light,
+.checkerboard {
+    background-color: #f8fafc;
     background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
     background-size: 14px 14px;
 }
 
-/* 3D Puff DTF & Cyan Glow FX */
+.checkerboard-dark {
+    background-color: #0f172a;
+    background-image: radial-gradient(rgba(37, 99, 235, 0.25) 1px, transparent 1px);
+    background-size: 14px 14px;
+}
+
+/* 3D Puff & Blue Glow FX */
 .puff-shadow {
-    filter: drop-shadow(0px 3px 0px rgba(0, 0, 0, 0.6)) drop-shadow(0px 6px 10px rgba(0, 0, 0, 0.5));
+    filter: drop-shadow(0px 3px 0px rgba(0, 0, 0, 0.12)) drop-shadow(0px 6px 10px rgba(37, 99, 235, 0.15));
 }
 
 .neon-glow,
-.cyan-glow {
-    filter: drop-shadow(0px 0px 10px rgba(120, 205, 226, 0.7));
+.cyan-glow,
+.blue-glow {
+    filter: drop-shadow(0px 0px 8px rgba(37, 99, 235, 0.45));
 }
 
-.cyan-box-glow {
-    box-shadow: 0 0 20px rgba(120, 205, 226, 0.25);
+.cyan-box-glow,
+.blue-box-glow {
+    box-shadow: 0 0 20px rgba(37, 99, 235, 0.2);
 }
 
 @keyframes pulse-subtle {
-    0%,
-    100% {
+    0%, 100% {
         transform: scale(1);
     }
     50% {
@@ -85,152 +91,275 @@
 }
 
 /* =========================================================================
-   LIGHT BACKGROUND THEME (Activated via html.light / body.light-mode)
+   BLUE AND WHITE CORE THEME OVERRIDES (Default & html.light)
    ========================================================================= */
 
+html,
 html.light,
 html.light body,
-body.light-mode {
-    background-color: #f8fafc !important;
-    color: #0f172a !important;
+body {
+    background-color: #f8fafc;
+    color: #0f172a;
 }
 
-html.light header {
+header {
     background-color: rgba(255, 255, 255, 0.95) !important;
     border-color: #e2e8f0 !important;
-    box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05) !important;
+    box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05) !important;
 }
 
-html.light .bg-black {
+/* Base Surfaces in Blue & White Theme */
+.bg-black {
     background-color: #ffffff !important;
 }
 
-html.light .bg-black\/95 {
+.bg-black\/95 {
     background-color: rgba(255, 255, 255, 0.95) !important;
 }
 
-html.light .bg-black\/80 {
-    background-color: rgba(255, 255, 255, 0.85) !important;
+.bg-black\/80 {
+    background-color: rgba(255, 255, 255, 0.9) !important;
 }
 
-html.light .bg-slate-950 {
+.bg-slate-950 {
     background-color: #f8fafc !important;
 }
 
-html.light .bg-slate-900 {
+.bg-slate-900 {
     background-color: #ffffff !important;
 }
 
-html.light .bg-slate-900\/80,
-html.light .bg-slate-900\/60,
-html.light .bg-slate-900\/50,
-html.light .bg-slate-900\/40 {
+.bg-slate-900\/80,
+.bg-slate-900\/60,
+.bg-slate-900\/50,
+.bg-slate-900\/40 {
     background-color: #f1f5f9 !important;
 }
 
-html.light .bg-slate-800 {
-    background-color: #f1f5f9 !important;
+.bg-slate-800 {
+    background-color: #eff6ff !important;
 }
 
-html.light .bg-dark-900,
-html.light .bg-dark-950 {
+.bg-dark-900,
+.bg-dark-950 {
     background-color: #ffffff !important;
 }
 
-html.light .bg-dark-850,
-html.light .bg-dark-800 {
-    background-color: #f1f5f9 !important;
+.bg-dark-850,
+.bg-dark-800 {
+    background-color: #f8fafc !important;
 }
 
-/* Gradients in Light mode */
-html.light .from-black {
-    --tw-gradient-from: #f8fafc !important;
+/* Blue Brand Mapping from legacy cyan */
+.text-\[\#78cde2\] {
+    color: #2563eb !important;
 }
 
-html.light .via-slate-950 {
+.bg-\[\#78cde2\] {
+    background-color: #2563eb !important;
+    color: #ffffff !important;
+}
+
+.bg-\[\#78cde2\]\/10,
+.bg-\[\#78cde2\]\/15,
+.bg-\[\#78cde2\]\/20,
+.bg-\[\#78cde2\]\/25,
+.bg-\[\#78cde2\]\/30 {
+    background-color: #eff6ff !important;
+    color: #1d4ed8 !important;
+}
+
+.border-\[\#78cde2\],
+.border-\[\#78cde2\]\/20,
+.border-\[\#78cde2\]\/30,
+.border-\[\#78cde2\]\/40 {
+    border-color: #bfdbfe !important;
+}
+
+/* Gradients */
+.from-black {
+    --tw-gradient-from: #eff6ff !important;
+}
+
+.via-slate-950 {
     --tw-gradient-via: #ffffff !important;
 }
 
-html.light .to-black {
+.to-black {
     --tw-gradient-to: #f8fafc !important;
 }
 
-/* Borders in Light mode */
-html.light .border-slate-900,
-html.light .border-slate-800,
-html.light .border-slate-700 {
+/* Borders */
+.border-slate-900,
+.border-slate-800,
+.border-slate-700 {
     border-color: #e2e8f0 !important;
 }
 
-html.light .border-\[\#78cde2\]\/20,
-html.light .border-\[\#78cde2\]\/30,
-html.light .border-\[\#78cde2\]\/40 {
-    border-color: rgba(120, 205, 226, 0.5) !important;
-}
-
-/* Text colors in Light mode */
-html.light .text-white {
+/* Text Colors */
+.text-white {
     color: #0f172a !important;
 }
 
-html.light .text-slate-100 {
+.text-slate-100 {
     color: #1e293b !important;
 }
 
-html.light .text-slate-200 {
+.text-slate-200 {
     color: #334155 !important;
 }
 
-html.light .text-slate-300 {
+.text-slate-300 {
     color: #475569 !important;
 }
 
-html.light .text-slate-400 {
+.text-slate-400 {
     color: #64748b !important;
 }
 
-html.light .text-slate-500 {
+.text-slate-500 {
     color: #64748b !important;
 }
 
-/* Inputs & Form elements in Light mode */
-html.light input,
-html.light select,
-html.light textarea {
+/* Ensure white text stays white on blue buttons & badges */
+button.bg-\[\#78cde2\],
+a.bg-\[\#78cde2\],
+.btn-primary,
+.bg-blue-600,
+.bg-blue-700,
+.bg-blue-800,
+.bg-blue-900,
+.bg-red-600,
+.badge-blue {
+    color: #ffffff !important;
+}
+
+button.bg-\[\#78cde2\] i,
+button.bg-\[\#78cde2\] span,
+button.bg-\[\#78cde2\] div,
+a.bg-\[\#78cde2\] i,
+a.bg-\[\#78cde2\] span {
+    color: #ffffff !important;
+}
+
+/* Header cart badge */
+#cart-badge-count {
+    background-color: #2563eb !important;
+    color: #ffffff !important;
+    border-color: #ffffff !important;
+}
+
+/* Inputs & Form Controls */
+input,
+select,
+textarea {
     background-color: #ffffff !important;
     color: #0f172a !important;
     border-color: #cbd5e1 !important;
 }
 
-html.light input::placeholder,
-html.light textarea::placeholder {
+input::placeholder,
+textarea::placeholder {
     color: #94a3b8 !important;
 }
 
-/* Interactive elements in Light mode */
-html.light .hover\:bg-slate-800:hover,
-html.light .hover\:bg-dark-800:hover {
-    background-color: #e2e8f0 !important;
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: #2563eb !important;
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2) !important;
 }
 
-/* Theme Toggle Container in Light mode */
-html.light #header-theme-toggle {
-    background-color: #e2e8f0 !important;
-    border-color: #cbd5e1 !important;
+/* Interactive elements */
+.hover\:bg-slate-800:hover,
+.hover\:bg-dark-800:hover {
+    background-color: #eff6ff !important;
+    color: #1d4ed8 !important;
 }
 
-/* Modal Backdrops in Light mode */
-html.light .fixed.inset-0.bg-black\/80,
-html.light .fixed.inset-0.bg-black\/90,
-html.light .fixed.inset-0.bg-black\/95 {
-    background-color: rgba(15, 23, 42, 0.65) !important;
+/* Theme Toggle Container */
+#header-theme-toggle {
+    background-color: #eff6ff !important;
+    border-color: #bfdbfe !important;
 }
 
-html.light ::-webkit-scrollbar-track {
-    background: #f1f5f9;
+/* Modals & Overlays */
+.fixed.inset-0.bg-black\/80,
+.fixed.inset-0.bg-black\/90,
+.fixed.inset-0.bg-black\/95 {
+    background-color: rgba(15, 23, 42, 0.6) !important;
 }
 
-html.light ::-webkit-scrollbar-thumb {
-    background: #cbd5e1;
-    border-color: rgba(120, 205, 226, 0.4);
+/* Shadows */
+.shadow-black\/80,
+.shadow-2xl {
+    box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.08), 0 8px 10px -6px rgba(15, 23, 42, 0.05) !important;
+}
+
+/* Top Announcement bar in Blue & White theme */
+.top-announcement-bar {
+    background-color: #1e40af !important;
+    color: #ffffff !important;
+    border-color: #1d4ed8 !important;
+}
+.top-announcement-bar a,
+.top-announcement-bar span {
+    color: #ffffff !important;
+}
+
+/* =========================================================================
+   OPTIONAL DARK MODE (Activated when html.dark is chosen)
+   ========================================================================= */
+
+html.dark,
+html.dark body {
+    background-color: #090d16 !important;
+    color: #f1f5f9 !important;
+}
+
+html.dark header {
+    background-color: rgba(9, 13, 22, 0.95) !important;
+    border-color: #1e293b !important;
+}
+
+html.dark .bg-black,
+html.dark .bg-slate-900 {
+    background-color: #0f172a !important;
+}
+
+html.dark .bg-slate-950 {
+    background-color: #090d16 !important;
+}
+
+html.dark .text-white {
+    color: #ffffff !important;
+}
+
+html.dark .text-slate-100 {
+    color: #f1f5f9 !important;
+}
+
+html.dark .text-slate-200 {
+    color: #e2e8f0 !important;
+}
+
+html.dark .text-slate-300 {
+    color: #cbd5e1 !important;
+}
+
+html.dark .text-slate-400 {
+    color: #94a3b8 !important;
+}
+
+html.dark .border-slate-800,
+html.dark .border-slate-700 {
+    border-color: #1e293b !important;
+}
+
+html.dark input,
+html.dark select,
+html.dark textarea {
+    background-color: #0f172a !important;
+    color: #ffffff !important;
+    border-color: #334155 !important;
 }

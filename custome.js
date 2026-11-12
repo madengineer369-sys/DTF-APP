@@ -28,13 +28,13 @@ function setCustomGarmentType(typeLabel, basePrice) {
     const garmentPath = document.getElementById('garment-path');
     if (garmentPath) {
         if (typeLabel.includes('T-Shirt')) {
-            if (btnTshirt) btnTshirt.className = 'px-2.5 py-1 rounded-lg font-black bg-[#78cde2] text-black transition';
+            if (btnTshirt) btnTshirt.className = 'px-2.5 py-1 rounded-lg font-black bg-[#2563eb] text-black transition';
             garmentPath.setAttribute('d', 'M85,20 L115,20 C125,40 175,40 185,20 L215,20 L280,75 L250,125 L215,100 L215,295 L85,295 L85,100 L50,125 L20,75 Z');
         } else if (typeLabel.includes('Hoodie')) {
-            if (btnHoodie) btnHoodie.className = 'px-2.5 py-1 rounded-lg font-black bg-[#78cde2] text-black transition';
+            if (btnHoodie) btnHoodie.className = 'px-2.5 py-1 rounded-lg font-black bg-[#2563eb] text-black transition';
             garmentPath.setAttribute('d', 'M95,25 C110,5 190,5 205,25 L230,30 L285,115 L250,145 L220,95 L220,295 L80,295 L80,95 L50,145 L15,115 L70,30 Z');
         } else {
-            if (btnDtf) btnDtf.className = 'px-2.5 py-1 rounded-lg font-black bg-[#78cde2] text-black transition';
+            if (btnDtf) btnDtf.className = 'px-2.5 py-1 rounded-lg font-black bg-[#2563eb] text-black transition';
             garmentPath.setAttribute('d', 'M45,25 L255,25 L255,295 L45,295 Z');
         }
     }
@@ -132,7 +132,7 @@ function updateCustomPreview() {
     const fontClass = document.getElementById('custom-font-select')?.value || 'font-bebas';
     const nameColor = document.getElementById('custom-name-color')?.value || '#ffffff';
     const numSize = document.getElementById('custom-num-size')?.value || 'text-5xl sm:text-6xl';
-    const numColor = document.getElementById('custom-num-color')?.value || '#78cde2';
+    const numColor = document.getElementById('custom-num-color')?.value || '#2563eb';
 
     const dimSelect = document.getElementById('custom-dimension-select');
     const paintSelect = document.getElementById('custom-paint-select');

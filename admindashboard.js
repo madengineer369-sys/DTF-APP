@@ -308,10 +308,10 @@ function setCurrency(curr) {
   const btnUSD = document.getElementById('currBtnUSD');
   if (btnINR && btnUSD) {
     if (curr === 'INR') {
-      btnINR.className = 'px-2.5 py-1 rounded-md font-bold transition bg-[#78cde2] text-black';
+      btnINR.className = 'px-2.5 py-1 rounded-md font-bold transition bg-[#2563eb] text-black';
       btnUSD.className = 'px-2.5 py-1 rounded-md font-semibold transition text-slate-400 hover:text-white';
     } else {
-      btnUSD.className = 'px-2.5 py-1 rounded-md font-bold transition bg-[#78cde2] text-black';
+      btnUSD.className = 'px-2.5 py-1 rounded-md font-bold transition bg-[#2563eb] text-black';
       btnINR.className = 'px-2.5 py-1 rounded-md font-semibold transition text-slate-400 hover:text-white';
     }
   }
@@ -342,7 +342,7 @@ function switchTab(tabId) {
     }
     if (navBtn) {
       if (t === tabId) {
-        navBtn.className = 'nav-btn w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-bold transition bg-[#78cde2]/15 text-[#78cde2] border border-[#78cde2]/40 shadow-sm';
+        navBtn.className = 'nav-btn w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-bold transition bg-[#2563eb]/15 text-[#2563eb] border border-[#2563eb]/40 shadow-sm';
       } else {
         navBtn.className = 'nav-btn w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-900/60 transition';
       }
@@ -490,7 +490,7 @@ function initOrUpdateChart(range = '7d') {
         {
           label: 'Daily Revenue (₹)',
           data: revData7d,
-          backgroundColor: 'rgba(120, 205, 226, 0.85)',
+          backgroundColor: 'rgba(37, 99, 235, 0.85)',
           borderRadius: 6,
           yAxisID: 'y'
         },
@@ -498,8 +498,8 @@ function initOrUpdateChart(range = '7d') {
           label: 'Linear Feet Printed (Ft)',
           data: linearData7d,
           type: 'line',
-          borderColor: '#78cde2',
-          backgroundColor: 'rgba(120, 205, 226, 0.2)',
+          borderColor: '#1d4ed8',
+          backgroundColor: 'rgba(37, 99, 235, 0.15)',
           borderWidth: 2,
           tension: 0.35,
           pointRadius: 4,
@@ -553,7 +553,7 @@ function setOrderFilter(status) {
   state.orderFilter = status;
   document.querySelectorAll('.order-filter-btn').forEach(btn => {
     if (btn.dataset.status === status) {
-      btn.className = 'order-filter-btn px-3 py-1.5 rounded-lg text-xs font-black bg-[#78cde2] text-black transition';
+      btn.className = 'order-filter-btn px-3 py-1.5 rounded-lg text-xs font-black bg-[#2563eb] text-black transition';
     } else {
       btn.className = 'order-filter-btn px-3 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-white bg-slate-900 border border-slate-800 transition';
     }
@@ -588,22 +588,22 @@ function renderOrdersTable() {
     return `
       <tr class="border-b border-slate-800/80 hover:bg-slate-800/40 transition">
         <td class="py-3 px-4 font-mono font-bold text-white">
-          <div class="hover:text-[#78cde2] cursor-pointer" onclick="openArtworkModal('${o.id}')">${o.id}</div>
+          <div class="hover:text-[#2563eb] cursor-pointer" onclick="openArtworkModal('${o.id}')">${o.id}</div>
           <div class="text-[10px] text-slate-400 font-sans font-normal">${o.date}</div>
         </td>
         <td class="py-3 px-4">
           <div class="font-bold text-slate-200 text-xs">${o.customer}</div>
-          <a href="https://wa.me/${o.phone.replace(/\D/g, '')}" target="_blank" class="text-[11px] text-[#78cde2] hover:underline flex items-center gap-1">
+          <a href="https://wa.me/${o.phone.replace(/\D/g, '')}" target="_blank" class="text-[11px] text-[#2563eb] hover:underline flex items-center gap-1">
             <i data-lucide="message-square" class="w-3 h-3"></i> ${o.phone}
           </a>
         </td>
         <td class="py-3 px-4">
           <div class="text-xs text-slate-100 font-medium">${o.spec}</div>
-          <span class="text-[10px] text-[#78cde2] font-mono">${o.linearFeet} Linear Ft • ${o.type}</span>
+          <span class="text-[10px] text-[#2563eb] font-mono">${o.linearFeet} Linear Ft • ${o.type}</span>
         </td>
         <td class="py-3 px-4">
           <div onclick="openArtworkModal('${o.id}')" class="flex items-center gap-2 cursor-pointer group">
-            <div class="w-10 h-10 rounded-lg checkerboard border border-slate-700 flex items-center justify-center p-0.5 shrink-0 group-hover:border-[#78cde2] transition">
+            <div class="w-10 h-10 rounded-lg checkerboard border border-slate-700 flex items-center justify-center p-0.5 shrink-0 group-hover:border-[#2563eb] transition">
               <img src="${thumb}" class="max-h-full max-w-full object-contain rounded" alt="${o.id}">
             </div>
             <div>
@@ -613,7 +613,7 @@ function renderOrdersTable() {
           </div>
         </td>
         <td class="py-3 px-4">
-          <select onchange="updateOrderStage('${o.id}', this.value)" class="bg-black border border-slate-700 text-white rounded-lg px-2.5 py-1 text-xs font-semibold focus:border-[#78cde2] focus:outline-none">
+          <select onchange="updateOrderStage('${o.id}', this.value)" class="bg-black border border-slate-700 text-white rounded-lg px-2.5 py-1 text-xs font-semibold focus:border-[#2563eb] focus:outline-none">
             <option value="Pending Artwork" ${o.stage === 'Pending Artwork' ? 'selected' : ''}>Pending Artwork</option>
             <option value="In Print Queue" ${o.stage === 'In Print Queue' ? 'selected' : ''}>In Print Queue</option>
             <option value="Curing & Cut" ${o.stage === 'Curing & Cut' ? 'selected' : ''}>Curing & Cut</option>
@@ -621,12 +621,12 @@ function renderOrdersTable() {
             <option value="Shipped" ${o.stage === 'Shipped' ? 'selected' : ''}>Shipped</option>
           </select>
         </td>
-        <td class="py-3 px-4 font-mono font-extrabold text-[#78cde2] text-right">
+        <td class="py-3 px-4 font-mono font-extrabold text-[#2563eb] text-right">
           ${formatMoney(o.totalInr)}
         </td>
         <td class="py-3 px-4 text-right">
           <div class="flex items-center justify-end gap-1.5">
-            <button onclick="advanceOrderNextStage('${o.id}')" title="Advance to Next Stage" class="p-1.5 rounded-lg bg-[#78cde2]/15 text-[#78cde2] hover:bg-[#78cde2] hover:text-black font-bold transition">
+            <button onclick="advanceOrderNextStage('${o.id}')" title="Advance to Next Stage" class="p-1.5 rounded-lg bg-[#2563eb]/15 text-[#2563eb] hover:bg-[#2563eb] hover:text-black font-bold transition">
               <i data-lucide="arrow-right-circle" class="w-4 h-4"></i>
             </button>
             <button onclick="openArtworkModal('${o.id}')" title="Inspect Preflight" class="p-1.5 rounded-lg bg-slate-800 text-slate-300 hover:text-white transition">
@@ -821,7 +821,7 @@ function setProductFilter(cat) {
   state.productFilter = cat;
   document.querySelectorAll('.prod-filter-btn').forEach(btn => {
     if (btn.dataset.cat === cat) {
-      btn.className = 'prod-filter-btn px-3 py-1.5 rounded-lg text-xs font-black bg-[#78cde2] text-black transition';
+      btn.className = 'prod-filter-btn px-3 py-1.5 rounded-lg text-xs font-black bg-[#2563eb] text-black transition';
     } else {
       btn.className = 'prod-filter-btn px-3 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-white bg-slate-900 border border-slate-800 transition';
     }
@@ -852,7 +852,7 @@ function renderProductsGrid() {
         <div>
           <div class="relative h-44 checkerboard-dark rounded-xl flex items-center justify-center p-3 mb-3 overflow-hidden">
             <img src="${img}" class="max-h-full max-w-full object-contain group-hover:scale-105 transition duration-300 drop-shadow-xl" alt="${p.name}">
-            <span class="absolute top-2 left-2 px-2 py-0.5 rounded-md text-[10px] font-bold bg-slate-950/85 border border-slate-800 text-[#78cde2]">${p.category}</span>
+            <span class="absolute top-2 left-2 px-2 py-0.5 rounded-md text-[10px] font-bold bg-slate-950/85 border border-slate-800 text-[#2563eb]">${p.category}</span>
             ${p.featured ? `<span class="absolute top-2 right-2 px-2 py-0.5 rounded-md text-[10px] font-bold bg-pink-500/20 border border-pink-500/40 text-pink-300">Featured</span>` : ''}
           </div>
           <h3 class="font-bold text-sm text-white leading-tight mb-1">${p.name}</h3>
@@ -1154,7 +1154,7 @@ function renderWebsiteCMS() {
     coupCont.innerHTML = state.coupons.map(c => `
       <div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-900 border border-slate-800 text-xs">
         <div>
-          <span class="font-mono font-bold text-[#78cde2]">${c.code}</span>
+          <span class="font-mono font-bold text-[#2563eb]">${c.code}</span>
           <span class="ml-2 font-mono text-emerald-400 font-bold">${c.discountPct}% OFF</span>
           <span class="ml-2 text-[10px] text-slate-400 font-mono">(${c.uses} uses)</span>
         </div>
@@ -1272,8 +1272,8 @@ function openStorefrontPreviewModal() {
             <div class="text-[10px] text-slate-400 mt-0.5">${p.dims}</div>
           </div>
           <div class="pt-2 mt-2 border-t border-slate-800 flex items-center justify-between">
-            <span class="text-xs font-black text-[#78cde2]">${formatMoney(p.priceInr)}</span>
-            <span class="text-[10px] font-black px-2 py-0.5 rounded bg-[#78cde2] text-black">Add</span>
+            <span class="text-xs font-black text-[#2563eb]">${formatMoney(p.priceInr)}</span>
+            <span class="text-[10px] font-black px-2 py-0.5 rounded bg-[#2563eb] text-black">Add</span>
           </div>
         </div>
       `;
@@ -1523,11 +1523,11 @@ function switchCodeTab(tab) {
   if (!display) return;
 
   if (tab === 'sql') {
-    if (sqlBtn) sqlBtn.className = 'px-3 py-1 rounded-md font-bold bg-[#78cde2] text-black';
+    if (sqlBtn) sqlBtn.className = 'px-3 py-1 rounded-md font-bold bg-[#2563eb] text-black';
     if (jsBtn) jsBtn.className = 'px-3 py-1 rounded-md font-semibold text-slate-400 hover:text-white';
     display.textContent = SUPABASE_SQL_SCHEMA;
   } else {
-    if (jsBtn) jsBtn.className = 'px-3 py-1 rounded-md font-bold bg-[#78cde2] text-black';
+    if (jsBtn) jsBtn.className = 'px-3 py-1 rounded-md font-bold bg-[#2563eb] text-black';
     if (sqlBtn) sqlBtn.className = 'px-3 py-1 rounded-md font-semibold text-slate-400 hover:text-white';
     display.textContent = SUPABASE_FRONTEND_JS;
   }
@@ -1748,14 +1748,14 @@ function lockDashboardSession() {
 }
 
 // ==========================================
-// DARK / LIGHT BACKGROUND THEME CONTROLLER
+// DARK / LIGHT BACKGROUND THEME CONTROLLER (BLUE & WHITE EDITION)
 // ==========================================
 function getSiteTheme() {
-  return localStorage.getItem('blackstone_site_theme') || 'dark';
+  return localStorage.getItem('blackstone_site_theme') || 'light';
 }
 
 function setSiteTheme(mode) {
-  if (mode !== 'light' && mode !== 'dark') mode = 'dark';
+  if (mode !== 'light' && mode !== 'dark') mode = 'light';
   localStorage.setItem('blackstone_site_theme', mode);
   applySiteTheme(mode);
 }
@@ -1780,10 +1780,10 @@ function applySiteTheme(mode) {
   const lightBtn = document.getElementById('adminThemeLightBtn');
   if (darkBtn && lightBtn) {
     if (isLight) {
-      darkBtn.className = 'px-2 py-1 rounded-md font-semibold transition flex items-center gap-1 text-slate-500 hover:text-black text-[11px]';
-      lightBtn.className = 'px-2 py-1 rounded-md font-black transition flex items-center gap-1 bg-[#78cde2] text-black text-[11px] shadow-sm';
+      darkBtn.className = 'px-2 py-1 rounded-md font-semibold transition flex items-center gap-1 text-slate-500 hover:text-blue-600 text-[11px]';
+      lightBtn.className = 'px-2 py-1 rounded-md font-black transition flex items-center gap-1 bg-blue-600 text-white text-[11px] shadow-sm';
     } else {
-      darkBtn.className = 'px-2 py-1 rounded-md font-black transition flex items-center gap-1 bg-[#78cde2] text-black text-[11px] shadow-sm';
+      darkBtn.className = 'px-2 py-1 rounded-md font-black transition flex items-center gap-1 bg-blue-600 text-white text-[11px] shadow-sm';
       lightBtn.className = 'px-2 py-1 rounded-md font-semibold transition flex items-center gap-1 text-slate-400 hover:text-white text-[11px]';
     }
   }
@@ -1792,10 +1792,10 @@ function applySiteTheme(mode) {
   const wsLightBtn = document.getElementById('adminWsLightBtn');
   if (wsDarkBtn && wsLightBtn) {
     if (isLight) {
-      wsDarkBtn.className = 'px-2.5 py-1 rounded-md font-semibold transition flex items-center gap-1.5 text-slate-500 hover:text-black';
-      wsLightBtn.className = 'px-2.5 py-1 rounded-md font-black transition flex items-center gap-1.5 bg-[#78cde2] text-black shadow-sm';
+      wsDarkBtn.className = 'px-2.5 py-1 rounded-md font-semibold transition flex items-center gap-1.5 text-slate-500 hover:text-blue-600';
+      wsLightBtn.className = 'px-2.5 py-1 rounded-md font-black transition flex items-center gap-1.5 bg-blue-600 text-white shadow-sm';
     } else {
-      wsDarkBtn.className = 'px-2.5 py-1 rounded-md font-black transition flex items-center gap-1.5 bg-[#78cde2] text-black shadow-sm';
+      wsDarkBtn.className = 'px-2.5 py-1 rounded-md font-black transition flex items-center gap-1.5 bg-blue-600 text-white shadow-sm';
       wsLightBtn.className = 'px-2.5 py-1 rounded-md font-semibold transition flex items-center gap-1.5 text-slate-400 hover:text-white';
     }
   }

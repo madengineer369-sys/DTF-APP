@@ -78,13 +78,13 @@ function switchAdminPreviewMedia(mode) {
     if (!tabImg || !tabVid || !imgEl || !vidEl || !placeholder) return;
 
     if (mode === 'video') {
-        tabVid.className = 'px-2.5 py-1 rounded bg-[#78cde2] text-black font-black';
+        tabVid.className = 'px-2.5 py-1 rounded bg-[#2563eb] text-black font-black';
         tabImg.className = 'px-2.5 py-1 rounded text-slate-400 hover:text-white font-semibold';
         imgEl.classList.add('hidden');
         placeholder.classList.add('hidden');
         vidEl.classList.remove('hidden');
     } else {
-        tabImg.className = 'px-2.5 py-1 rounded bg-[#78cde2] text-black font-black';
+        tabImg.className = 'px-2.5 py-1 rounded bg-[#2563eb] text-black font-black';
         tabVid.className = 'px-2.5 py-1 rounded text-slate-400 hover:text-white font-semibold';
         vidEl.classList.add('hidden');
         vidEl.pause();
@@ -241,16 +241,16 @@ function renderAdminInventoryTable() {
                 </td>
                 <td class="py-3 px-3">
                     <div class="font-bold text-white">${item.name}</div>
-                    <div class="text-[11px] text-slate-400">${item.category} • <span class="text-[#78cde2] font-semibold">${item.badge}</span></div>
+                    <div class="text-[11px] text-slate-400">${item.category} • <span class="text-[#2563eb] font-semibold">${item.badge}</span></div>
                 </td>
                 <td class="py-3 px-3 text-xs">
                     <div class="text-slate-200 font-medium">${item.dimension}</div>
-                    <div class="text-[#78cde2] text-[11px] font-semibold">${item.paint}</div>
+                    <div class="text-[#2563eb] text-[11px] font-semibold">${item.paint}</div>
                 </td>
                 <td class="py-3 px-3">
                     <div class="flex items-center gap-1">
-                        <span class="text-[#78cde2] font-black">₹</span>
-                        <input type="number" value="${item.price}" onchange="adminUpdateStickerPrice('${item.id}', this.value)" class="w-20 px-2 py-1 rounded-lg bg-black border border-slate-700 text-white font-black text-xs focus:border-[#78cde2] focus:outline-none">
+                        <span class="text-[#2563eb] font-black">₹</span>
+                        <input type="number" value="${item.price}" onchange="adminUpdateStickerPrice('${item.id}', this.value)" class="w-20 px-2 py-1 rounded-lg bg-black border border-slate-700 text-white font-black text-xs focus:border-[#2563eb] focus:outline-none">
                     </div>
                 </td>
                 <td class="py-3 px-3 text-right">

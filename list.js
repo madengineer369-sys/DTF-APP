@@ -11,7 +11,7 @@ function filterCategory(cat) {
     currentCategory = cat;
     document.querySelectorAll('.cat-btn').forEach(btn => {
         if (btn.dataset.cat === cat) {
-            btn.className = 'cat-btn px-4 py-2 rounded-xl text-xs font-black bg-[#78cde2] text-black whitespace-nowrap transition shadow-md shadow-[#78cde2]/25';
+            btn.className = 'cat-btn px-4 py-2 rounded-xl text-xs font-black bg-[#2563eb] text-black whitespace-nowrap transition shadow-md shadow-[#2563eb]/25';
         } else {
             btn.className = 'cat-btn px-4 py-2 rounded-xl text-xs font-semibold bg-slate-900 text-slate-300 hover:text-white hover:bg-slate-800 whitespace-nowrap transition border border-slate-800';
         }
@@ -76,7 +76,7 @@ function renderCatalog() {
                 <i class="fa-solid fa-magnifying-glass text-3xl text-slate-600"></i>
                 <h3 class="text-base font-bold text-white">No matching DTF stickers found</h3>
                 <p class="text-xs text-slate-400">Try clearing your search or head over to the Custom Cloth Studio to customize your own.</p>
-                <a href="customdtf.html" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#78cde2] hover:bg-[#99e1f2] text-black font-black text-xs shadow-md shadow-[#78cde2]/20">
+                <a href="customdtf.html" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#2563eb] hover:bg-[#1d4ed8] text-black font-black text-xs shadow-md shadow-[#2563eb]/20">
                     <i class="fa-solid fa-shirt"></i> Open Custom Studio
                 </a>
             </div>
@@ -100,28 +100,28 @@ function renderCatalog() {
         }
 
         return `
-            <div class="bg-[#050810] border border-slate-800/80 hover:border-[#78cde2]/60 rounded-2xl overflow-hidden flex flex-col justify-between transition group shadow-lg hover:shadow-[#78cde2]/10">
+            <div class="bg-[#050810] border border-slate-800/80 hover:border-[#2563eb]/60 rounded-2xl overflow-hidden flex flex-col justify-between transition group shadow-lg hover:shadow-[#2563eb]/10">
                 <div>
                     <!-- Visual Sticker Preview Area (Supports Photo & Video Toggle) -->
                     <div class="relative h-52 ${bgClass} flex items-center justify-center p-3 transition-colors">
-                        <span class="absolute top-3 left-3 z-10 px-2.5 py-0.5 rounded-full bg-black/90 border border-[#78cde2]/40 text-[10px] font-bold text-[#78cde2]">
+                        <span class="absolute top-3 left-3 z-10 px-2.5 py-0.5 rounded-full bg-black/90 border border-[#2563eb]/40 text-[10px] font-bold text-[#2563eb]">
                             ${item.badge}
                         </span>
 
                         <!-- Photo / Video Switcher Pill on Card -->
                         ${media.hasVideo ? `
                             <div class="absolute bottom-2.5 left-2.5 z-10 flex items-center bg-black/90 border border-slate-700 rounded-lg p-0.5 text-[10px]">
-                                <button onclick="toggleCardMediaView('${item.id}', 'image')" class="px-2 py-0.5 rounded font-black transition ${activeMode === 'image' ? 'bg-[#78cde2] text-black' : 'text-slate-400 hover:text-white'}">
+                                <button onclick="toggleCardMediaView('${item.id}', 'image')" class="px-2 py-0.5 rounded font-black transition ${activeMode === 'image' ? 'bg-[#2563eb] text-black' : 'text-slate-400 hover:text-white'}">
                                     <i class="fa-solid fa-image mr-1"></i>Photo
                                 </button>
-                                <button onclick="toggleCardMediaView('${item.id}', 'video')" class="px-2 py-0.5 rounded font-black transition flex items-center gap-1 ${activeMode === 'video' ? 'bg-[#78cde2] text-black' : 'text-[#78cde2] hover:text-white'}">
+                                <button onclick="toggleCardMediaView('${item.id}', 'video')" class="px-2 py-0.5 rounded font-black transition flex items-center gap-1 ${activeMode === 'video' ? 'bg-[#2563eb] text-black' : 'text-[#2563eb] hover:text-white'}">
                                     <i class="fa-solid fa-play"></i>Video
                                 </button>
                             </div>
                         ` : ''}
 
                         <!-- Fullscreen Zoom Button -->
-                        <button onclick="openMediaLightbox('${item.id}', '${activeMode}')" title="Expand Photo & Video" class="absolute bottom-2.5 right-2.5 z-10 w-7 h-7 rounded-lg bg-black/85 hover:bg-slate-800 text-slate-300 hover:text-[#78cde2] border border-slate-700 flex items-center justify-center text-xs">
+                        <button onclick="openMediaLightbox('${item.id}', '${activeMode}')" title="Expand Photo & Video" class="absolute bottom-2.5 right-2.5 z-10 w-7 h-7 rounded-lg bg-black/85 hover:bg-slate-800 text-slate-300 hover:text-[#2563eb] border border-slate-700 flex items-center justify-center text-xs">
                             <i class="fa-solid fa-expand"></i>
                         </button>
 
@@ -131,19 +131,19 @@ function renderCatalog() {
                     <!-- Sticker Info: Title, Dimension & Paint -->
                     <div class="p-4 space-y-3">
                         <div class="flex items-start justify-between gap-2">
-                            <h3 class="font-bold text-base text-white leading-snug group-hover:text-[#78cde2] transition-colors">${item.name}</h3>
+                            <h3 class="font-bold text-base text-white leading-snug group-hover:text-[#2563eb] transition-colors">${item.name}</h3>
                         </div>
                         
                         <div class="space-y-1.5 text-xs">
                             <div class="flex items-center gap-2 text-slate-300 bg-black/70 px-2.5 py-1.5 rounded-lg border border-slate-800/80">
-                                <i class="fa-solid fa-ruler-combined text-[#78cde2] w-4 text-center"></i>
+                                <i class="fa-solid fa-ruler-combined text-[#2563eb] w-4 text-center"></i>
                                 <span class="text-slate-400">Dimension:</span>
                                 <strong class="text-white ml-auto text-right">${item.dimension}</strong>
                             </div>
                             <div class="flex items-center gap-2 text-slate-300 bg-black/70 px-2.5 py-1.5 rounded-lg border border-slate-800/80">
-                                <i class="fa-solid fa-fill-drip text-[#78cde2] w-4 text-center"></i>
+                                <i class="fa-solid fa-fill-drip text-[#2563eb] w-4 text-center"></i>
                                 <span class="text-slate-400">Paint:</span>
-                                <strong class="text-[#78cde2] ml-auto text-right">${item.paint}</strong>
+                                <strong class="text-[#2563eb] ml-auto text-right">${item.paint}</strong>
                             </div>
                         </div>
                     </div>
@@ -154,7 +154,7 @@ function renderCatalog() {
                     <div class="pt-3 border-t border-slate-800/80 flex items-center justify-between gap-2">
                         <div>
                             <span class="text-[10px] uppercase font-bold text-slate-400 block">Price / Sticker</span>
-                            <span class="text-xl font-black text-[#78cde2]">₹${item.price}</span>
+                            <span class="text-xl font-black text-[#2563eb]">₹${item.price}</span>
                         </div>
 
                         <div class="flex items-center gap-2">
@@ -164,7 +164,7 @@ function renderCatalog() {
                                 <button onclick="changeCardQty('${item.id}', 1)" class="w-7 h-7 rounded-lg hover:bg-slate-800 text-slate-300 font-bold text-xs">+</button>
                             </div>
 
-                            <button onclick="addCatalogStickerToCart('${item.id}')" class="px-3.5 py-2 rounded-xl bg-[#78cde2] hover:bg-[#99e1f2] text-black font-black text-xs transition flex items-center gap-1.5 shadow-md shadow-[#78cde2]/20">
+                            <button onclick="addCatalogStickerToCart('${item.id}')" class="px-3.5 py-2 rounded-xl bg-[#2563eb] hover:bg-[#1d4ed8] text-black font-black text-xs transition flex items-center gap-1.5 shadow-md shadow-[#2563eb]/20">
                                 <i class="fa-solid fa-cart-plus"></i> Add
                             </button>
                         </div>
